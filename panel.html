@@ -366,14 +366,20 @@ function urlInvitacion() {
 }
 const linkGrupo = (g) => urlInvitacion() + '?c=' + g.codigo;
 function mensajeWa(g) {
-  return `¡Hola ${g.nombre}! 💛\nNati y Dani nos casamos el domingo 11 de abril de 2027 y queremos que estés.\n\nEntrá a la invitación para ver todos los detalles y confirmar tu asistencia:\n${linkGrupo(g)}\n\nTu código es: ${g.codigo}`;
+  const pl = (g.integrantes || []).length > 1;
+  return `¡Hola ${g.nombre}! ❤️\n`
+    + `${pl ? 'Agenden' : 'Agendá'} esta fecha: 📅 *11.04.2027*\n`
+    + `¿Por qué? Porque… ¡¡NOS CASAMOS!! 💍👰🤵😍\n`
+    + `Y queremos compartir este día tan especial con ${pl ? 'ustedes' : 'vos'} 🥂✨\n\n`
+    + `Toda la info y la confirmación, acá 👇\n${linkGrupo(g)}\n`
+    + `🔑 ${pl ? 'Su' : 'Tu'} código: ${g.codigo}`;
 }
 const titulares = () => datos.grupos.filter(g => !g.suplente);
 const nombreMesa = (id) => { const m = datos.mesas.find(x => x.id === id); return m ? m.nombre : ''; };
 function estadoGrupo(g) {
   const ints = g.integrantes || [];
-  if (!g.respondido_at && ints.every(i => i.asiste === null)) return 'pendiente';
   if (ints.some(i => i.asiste === true)) return 'confirmado';
+  if (ints.some(i => i.asiste === null)) return 'pendiente';
   return 'novan';
 }
 function totales() {
@@ -436,7 +442,7 @@ function vResumen(v) {
       <h2>Últimas respuestas</h2>
       ${ultimas.length ? `<table class="t"><tbody>${ultimas.map(g => {
         const n = g.integrantes.filter(i => i.asiste).length;
-        return `<tr><td>${esc(g.nombre)}</td><td>${n ? `<span class="pill ok">${n} van</span>` : '<span class="pill pend">No van</span>'}</td><td class="muted chiquito" style="text-align:right">${fechaCorta(g.respondido_at)}</td></tr>`;
+        return `<tr><td>${esc(g.nombre)}</td><td>${n ? `<span class="pill ok">${n} van</span>` : g.integrantes.some(i => i.asiste === null) ? '<span class="pill pend">Todavía no saben</span>' : '<span class="pill gris">No van</span>'}</td><td class="muted chiquito" style="text-align:right">${fechaCorta(g.respondido_at)}</td></tr>`;
       }).join('')}</tbody></table>` : '<div class="vacio">Todavía nadie respondió.</div>'}
     </div>`;
 }
@@ -473,7 +479,8 @@ function grupoHtml(g) {
   const ints = [...(g.integrantes || [])].sort((a, b) => a.orden - b.orden);
   const lim = g.fecha_limite ? ` · plazo propio: ${esc(fechaLarga(g.fecha_limite))}` : '';
   const estado = g.suplente ? '<span class="pill gris">Suplente</span>'
-    : st === 'pendiente' ? '<span class="pill pend">Pendiente</span>' : `<span class="pill ok">Respondió ${fechaCorta(g.respondido_at)}</span>`;
+    : !g.respondido_at ? '<span class="pill pend">Pendiente</span>'
+    : `<span class="pill ${st === 'pendiente' ? 'pend' : 'ok'}">Respondió ${fechaCorta(g.respondido_at)}${st === 'pendiente' && g.integrantes.some(i => i.asiste === null) ? ' · falta confirmar' : ''}</span>`;
   return `
     <div class="grupo ${g.suplente ? 'sup' : ''}" data-id="${esc(g.id)}">
       <div class="grupo-cab">

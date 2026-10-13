@@ -72,7 +72,7 @@ a{color:var(--terracota-osc)}
 .sobrelinea{font-family:var(--sans);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--tinta-suave);font-weight:400}
 .nombres{font-family:var(--script);font-weight:400;font-size:64px;line-height:1.05;margin:10px 0 4px;color:var(--tinta)}
 .nombres .y{font-size:.6em;color:var(--terracota);padding:0 .08em}
-.fecha-grande{font-family:var(--serif);font-size:22px;letter-spacing:.18em;color:var(--tinta-suave);margin:6px 0 22px}
+.fecha-grande{font-family:var(--sans);font-weight:300;font-variant-numeric:lining-nums;font-size:21px;letter-spacing:.18em;color:var(--tinta-suave);margin:6px 0 22px}
 .campo-codigo{
   display:block;width:100%;text-align:center;text-transform:uppercase;letter-spacing:.4em;
   font-family:var(--serif);font-size:26px;font-weight:500;padding:12px 10px;
@@ -110,10 +110,10 @@ main{max-width:640px;margin:0 auto;padding:28px 16px 48px}
   font-family:var(--serif);color:var(--tinta)
 }
 .fecha-banda .lado{font-size:13px;letter-spacing:.3em;text-transform:uppercase;font-family:var(--sans);color:var(--tinta-suave);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:6px 4px;min-width:84px}
-.fecha-banda .dia{font-size:58px;line-height:1;font-weight:500}
+.fecha-banda .dia{font-family:var(--sans);font-size:56px;line-height:1;font-weight:300;font-variant-numeric:lining-nums;letter-spacing:.02em}
 .cuenta{display:flex;justify-content:center;gap:10px;margin:26px 0 8px}
 .cuenta div{background:var(--papel);border:1px solid var(--linea);border-radius:14px;padding:10px 6px 6px;min-width:74px;text-align:center}
-.cuenta b{display:block;font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.05}
+.cuenta b{display:block;font-family:var(--sans);font-weight:300;font-variant-numeric:lining-nums tabular-nums;font-size:30px;line-height:1.05}
 .cuenta span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-suave)}
 
 section.bloque{
@@ -129,7 +129,7 @@ section.bloque{
 .evento{border-radius:14px;padding:18px 18px 16px;border:1px solid var(--linea);background:#fff;position:relative;overflow:hidden}
 .evento::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--rosa)}
 .evento.fiesta::after{background:var(--salvia)}
-.evento .hora{font-family:var(--serif);font-size:30px;font-weight:500;line-height:1}
+.evento .hora{font-family:var(--sans);font-size:28px;font-weight:300;font-variant-numeric:lining-nums;line-height:1}
 .evento .hora small{font-size:16px;color:var(--tinta-suave);font-weight:400;margin-left:4px}
 .evento h3{font-family:var(--serif);font-size:22px;font-weight:500;margin:6px 0 2px}
 .evento .lugar{color:var(--tinta-suave);font-size:15px;margin:0 0 12px}
@@ -149,13 +149,18 @@ section.bloque{
 .persona-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .persona-top .nombre{font-family:var(--serif);font-size:21px;font-weight:500;line-height:1.2}
 .etiqueta{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--mostaza-claro);color:#8a6b3a}
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .seg button{
-  border:1px solid var(--linea);background:var(--papel);border-radius:12px;padding:10px 8px;cursor:pointer;
-  font-size:15px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px
+  border:1px solid var(--linea);background:var(--papel);border-radius:12px;padding:9px 4px 8px;cursor:pointer;
+  font-size:14px;line-height:1.2;transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center
 }
+.seg button .emo{font-size:20px;line-height:1}
 .seg button[aria-pressed="true"][data-v="si"]{background:var(--salvia-claro);border-color:var(--salvia);color:#4f5c43;font-weight:400}
 .seg button[aria-pressed="true"][data-v="no"]{background:var(--rosa-claro);border-color:var(--rosa);color:#8a4f45;font-weight:400}
+.seg button[aria-pressed="true"][data-v="nose"]{background:var(--mostaza-claro);border-color:var(--mostaza);color:#7a5d2e;font-weight:400}
+.persona.nose{border-color:#ecd9b5}
+.estado.nose{color:#8a6b3a}
+.nota-pend{font-size:14px;color:#7a5d2e;background:var(--mostaza-claro);border-radius:12px;padding:10px 12px;margin:0 0 12px;text-align:left}
 .dieta{margin-top:12px}
 .dieta-label{font-size:13px;color:var(--tinta-suave);margin-bottom:6px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -595,7 +600,7 @@ function mostrarInvitacion() {
 
 function prepararBorrador() {
   borrador = {};
-  inv.integrantes.forEach(i => { borrador[i.id] = { asiste: i.asiste, dieta: i.dieta || 'ninguna', dieta_detalle: i.dieta_detalle || '' }; });
+  inv.integrantes.forEach(i => { borrador[i.id] = { asiste: i.asiste !== null ? i.asiste : (inv.respondido_at ? 'nose' : null), dieta: i.dieta || 'ninguna', dieta_detalle: i.dieta_detalle || '' }; });
   mensajeBorrador = inv.mensaje || '';
 }
 
@@ -607,16 +612,20 @@ function renderRsvp() {
 
   if (!editando) {
     const van = inv.integrantes.filter(i => i.asiste === true).length;
+    const nose = inv.integrantes.filter(i => i.asiste === null).length;
     const sinResp = !inv.respondido_at;
+    const resumenTxt = van === 0 && nose === 0 ? 'Recibimos tu respuesta. ¡Te vamos a extrañar!'
+      : van === 0 ? 'Recibimos tu respuesta.'
+      : inv.integrantes.length === 1 ? '¡Te esperamos!' : `${van} de ${inv.integrantes.length} presentes.`;
     cuerpo.innerHTML = `
       <div class="resumen-rsvp">
         ${sinResp ? `<div class="cerrado">No llegamos a recibir tu confirmación. Si todavía querés venir, escribinos así lo vemos.</div>`
-                  : `<p class="gracias">¡Gracias!</p><p style="margin:4px 0 0;color:var(--tinta-suave)">${van === 0 ? 'Recibimos tu respuesta. ¡Te vamos a extrañar!' : `Confirmaron ${van} de ${inv.integrantes.length}.`}</p>`}
+                  : `<p class="gracias">¡Gracias!</p><p style="margin:4px 0 0;color:var(--tinta-suave)">${resumenTxt}</p>${nose && inv.abierto ? `<p class="nota-pend" style="margin-top:12px">⏳ ${inv.integrantes.length === 1 ? 'Cuando lo sepas, entrá de nuevo con el mismo código y tocá' : `${nose === 1 ? 'Queda una persona' : `Quedan ${nose} personas`} con “Todavía no sé”. Cuando lo sepan, entren de nuevo con el mismo código y toquen`} <b>Modificar respuesta</b> (hasta el ${fechaLarga(inv.fecha_limite)}).</p>` : ''}`}
         <ul class="lista-resumen">
           ${inv.integrantes.map(i => `
             <li>
               <span>${esc(i.nombre)}${i.asiste && i.dieta !== 'ninguna' ? `<br><small style="color:var(--tinta-suave)">${esc(dietaTexto(i.dieta, i.dieta_detalle))}</small>` : ''}</span>
-              <span class="estado ${i.asiste === true ? 'si' : i.asiste === false ? 'no' : ''}">${i.asiste === true ? '✓ Va' : i.asiste === false ? '✕ No va' : 'Sin responder'}</span>
+              <span class="estado ${i.asiste === true ? 'si' : i.asiste === false ? 'no' : 'nose'}">${i.asiste === true ? '🙋 ¡Presente!' : i.asiste === false ? '😢 No podrá ir' : '⏳ A confirmar'}</span>
             </li>`).join('')}
         </ul>
         ${inv.mensaje ? `<p style="font-family:var(--serif);font-style:italic;font-size:18px;color:var(--tinta-suave)">“${esc(inv.mensaje)}”</p>` : ''}
@@ -628,7 +637,7 @@ function renderRsvp() {
   }
 
   cuerpo.innerHTML = `
-    <p style="text-align:center;margin:0 0 16px;color:var(--tinta-suave)">Contanos quiénes vienen.${inv.integrantes.length > 1 ? ' Si alguien no puede, marcalo y listo.' : ''}</p>
+    <p style="text-align:center;margin:0 0 16px;color:var(--tinta-suave)">${inv.integrantes.length > 1 ? 'Tomamos lista: marcá quiénes vienen. Si de alguno todavía no sabés' : 'Tomamos lista: ¿venís? Si todavía no sabés'}, elegí “Todavía no sé” y lo cambiás más adelante.</p>
     <div id="personas">
       ${inv.integrantes.map(i => personaHtml(i)).join('')}
     </div>
@@ -646,7 +655,7 @@ function renderRsvp() {
 
 function personaHtml(i) {
   const b = borrador[i.id];
-  const clase = b.asiste === true ? 'va' : b.asiste === false ? 'nova' : '';
+  const clase = b.asiste === true ? 'va' : b.asiste === false ? 'nova' : b.asiste === 'nose' ? 'nose' : '';
   return `
     <div class="persona ${clase}" data-id="${esc(i.id)}">
       <div class="persona-top">
@@ -654,8 +663,9 @@ function personaHtml(i) {
         ${i.es_nino ? '<span class="etiqueta">Menor</span>' : ''}
       </div>
       <div class="seg" role="group" aria-label="Asistencia de ${esc(i.nombre)}">
-        <button type="button" data-accion="asiste" data-v="si" aria-pressed="${b.asiste === true}">✓ Va</button>
-        <button type="button" data-accion="asiste" data-v="no" aria-pressed="${b.asiste === false}">✕ No va</button>
+        <button type="button" data-accion="asiste" data-v="si" aria-pressed="${b.asiste === true}"><span class="emo" aria-hidden="true">🙋</span>¡Presente!</button>
+        <button type="button" data-accion="asiste" data-v="no" aria-pressed="${b.asiste === false}"><span class="emo" aria-hidden="true">😢</span>No podrá ir</button>
+        <button type="button" data-accion="asiste" data-v="nose" aria-pressed="${b.asiste === 'nose'}"><span class="emo" aria-hidden="true">⏳</span>Todavía no sé</button>
       </div>
       ${b.asiste === true ? `
         <div class="dieta">
@@ -672,7 +682,7 @@ $('rsvpCuerpo').addEventListener('click', (e) => {
   const btn = e.target.closest('button[data-accion]');
   if (!btn) return;
   const card = btn.closest('.persona'); const id = card.dataset.id; const b = borrador[id];
-  if (btn.dataset.accion === 'asiste') b.asiste = btn.dataset.v === 'si';
+  if (btn.dataset.accion === 'asiste') b.asiste = btn.dataset.v === 'si' ? true : btn.dataset.v === 'no' ? false : 'nose';
   if (btn.dataset.accion === 'dieta') b.dieta = btn.dataset.v;
   if ($('errorRsvp')) $('errorRsvp').textContent = '';
   const i = inv.integrantes.find(x => x.id === id);
@@ -689,7 +699,7 @@ $('rsvpCuerpo').addEventListener('input', (e) => {
 async function enviarRsvp() {
   const faltan = inv.integrantes.filter(i => borrador[i.id].asiste == null);
   if (faltan.length) {
-    $('errorRsvp').textContent = 'Falta marcar si ' + (faltan.length === 1 ? faltan[0].nombre + ' va o no.' : 'van o no: ' + faltan.map(f => f.nombre).join(', ') + '.');
+    $('errorRsvp').textContent = 'Falta elegir una opción para ' + (faltan.length === 1 ? faltan[0].nombre : faltan.map(f => f.nombre).join(', ')) + '.';
     return;
   }
   const otrosSinDetalle = inv.integrantes.filter(i => borrador[i.id].asiste && borrador[i.id].dieta === 'otro' && !borrador[i.id].dieta_detalle.trim());
@@ -697,7 +707,7 @@ async function enviarRsvp() {
 
   const payload = inv.integrantes.map(i => {
     const b = borrador[i.id];
-    return { id: i.id, asiste: b.asiste, dieta: b.asiste ? b.dieta : 'ninguna', dieta_detalle: b.asiste && b.dieta === 'otro' ? b.dieta_detalle.trim() : null };
+    return { id: i.id, asiste: b.asiste === 'nose' ? null : b.asiste, dieta: b.asiste ? b.dieta : 'ninguna', dieta_detalle: b.asiste && b.dieta === 'otro' ? b.dieta_detalle.trim() : null };
   });
   const btn = $('btnEnviar'); btn.disabled = true; btn.textContent = 'Enviando…'; $('errorRsvp').textContent = '';
   try {
