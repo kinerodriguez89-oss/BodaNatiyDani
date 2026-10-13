@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nati & Dani · 11.04.2027</title>
+<meta name="description" content="Nos casamos. Domingo 11 de abril de 2027.">
+<meta property="og:title" content="Nati & Dani · Nos casamos">
+<meta property="og:description" content="Domingo 11 de abril de 2027 · Entrá con tu código para confirmar asistencia.">
+<meta name="theme-color" content="#f7efe6">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --fondo:#f7efe6;
+  --papel:#fffaf4;
+  --tinta:#4a3730;
+  --tinta-suave:#7d665c;
+  --tinta-tenue:#a8928a;
+  --linea:#ead8ca;
+  --rosa:#d6a49c;
+  --rosa-claro:#f3e0da;
+  --terracota:#c28567;
+  --terracota-osc:#a76c50;
+  --salvia:#a3ae95;
+  --salvia-claro:#e4e9dc;
+  --mostaza:#ddbd88;
+  --mostaza-claro:#f5e8d0;
+  --error:#b4574a;
+  --radio:18px;
+  --sombra:0 1px 2px rgba(74,55,48,.05),0 8px 28px -12px rgba(74,55,48,.18);
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --script:"Pinyon Script","Cormorant Garamond",cursive;
+  --sans:"Jost",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;background:var(--fondo);color:var(--tinta);
+  font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.6;
+  background-image:
+    radial-gradient(40rem 30rem at -10% -5%, rgba(214,164,156,.22), transparent 60%),
+    radial-gradient(36rem 28rem at 110% 20%, rgba(221,189,136,.20), transparent 60%),
+    radial-gradient(40rem 34rem at 50% 115%, rgba(163,174,149,.22), transparent 60%);
+  background-attachment:fixed;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--terracota-osc)}
+.oculto{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- Ornamento ---------- */
+.rama{display:block;width:180px;max-width:60%;height:auto;margin:0 auto}
+.rama.invertida{transform:scaleY(-1)}
+
+/* ---------- Pantalla de código ---------- */
+#puerta{
+  min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;
+  padding:32px 16px;
+}
+.tarjeta-puerta{
+  width:100%;max-width:420px;text-align:center;background:var(--papel);
+  border:1px solid var(--linea);border-radius:28px;padding:40px 28px 32px;box-shadow:var(--sombra);
+  position:relative;
+}
+.tarjeta-puerta::before{
+  content:"";position:absolute;inset:8px;border:1px solid var(--linea);border-radius:22px;pointer-events:none;
+}
+.sobrelinea{font-family:var(--sans);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--tinta-suave);font-weight:400}
+.nombres{font-family:var(--script);font-weight:400;font-size:64px;line-height:1.05;margin:10px 0 4px;color:var(--tinta)}
+.nombres .y{font-size:.6em;color:var(--terracota);padding:0 .08em}
+.fecha-grande{font-family:var(--serif);font-size:22px;letter-spacing:.18em;color:var(--tinta-suave);margin:6px 0 22px}
+.campo-codigo{
+  display:block;width:100%;text-align:center;text-transform:uppercase;letter-spacing:.4em;
+  font-family:var(--serif);font-size:26px;font-weight:500;padding:12px 10px;
+  border:1px solid var(--linea);border-radius:14px;background:#fff;outline:none;transition:border-color .2s, box-shadow .2s;
+}
+.campo-codigo:focus{border-color:var(--rosa);box-shadow:0 0 0 4px var(--rosa-claro)}
+.campo-codigo::placeholder{letter-spacing:.2em;color:var(--tinta-tenue);font-size:18px}
+.ayuda{font-size:14px;color:var(--tinta-suave);margin:14px 0 18px}
+.msg-error{color:var(--error);font-size:14px;min-height:1.4em;margin:8px 0 0}
+
+/* ---------- Botones ---------- */
+.btn{
+  appearance:none;border:0;cursor:pointer;border-radius:999px;padding:13px 26px;
+  font-family:var(--sans);font-weight:400;font-size:15px;letter-spacing:.06em;
+  background:var(--terracota);color:#fff;transition:background .2s, transform .1s, opacity .2s;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+}
+.btn:hover{background:var(--terracota-osc)}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.55;cursor:default}
+.btn.ancho{width:100%}
+.btn.suave{background:var(--papel);color:var(--tinta);border:1px solid var(--linea)}
+.btn.suave:hover{background:var(--rosa-claro)}
+.btn.chico{padding:8px 16px;font-size:14px}
+.link-btn{background:none;border:0;padding:0;color:var(--tinta-suave);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:14px}
+
+/* ---------- Invitación ---------- */
+main{max-width:640px;margin:0 auto;padding:28px 16px 48px}
+.portada{text-align:center;padding:36px 4px 20px}
+.saludo{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--tinta-suave);margin:0 0 8px}
+.portada .nombres{font-size:clamp(64px,19vw,104px)}
+.frase{font-family:var(--serif);font-size:20px;max-width:30ch;margin:8px auto 0;color:var(--tinta-suave);font-style:italic}
+.fecha-banda{
+  display:flex;align-items:center;justify-content:center;gap:18px;margin:26px auto 4px;
+  font-family:var(--serif);color:var(--tinta)
+}
+.fecha-banda .lado{font-size:13px;letter-spacing:.3em;text-transform:uppercase;font-family:var(--sans);color:var(--tinta-suave);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:6px 4px;min-width:84px}
+.fecha-banda .dia{font-size:58px;line-height:1;font-weight:500}
+.cuenta{display:flex;justify-content:center;gap:10px;margin:26px 0 8px}
+.cuenta div{background:var(--papel);border:1px solid var(--linea);border-radius:14px;padding:10px 6px 6px;min-width:74px;text-align:center}
+.cuenta b{display:block;font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.05}
+.cuenta span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-suave)}
+
+section.bloque{
+  background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);
+  padding:28px 22px;margin:22px 0;box-shadow:var(--sombra);
+}
+.titulo-bloque{text-align:center;margin-bottom:20px}
+.titulo-bloque .sobrelinea{display:block;margin-bottom:2px}
+.titulo-bloque h2{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.15;margin:0}
+.titulo-bloque p{margin:8px auto 0;color:var(--tinta-suave);max-width:40ch}
+
+.eventos{display:grid;gap:14px}
+.evento{border-radius:14px;padding:18px 18px 16px;border:1px solid var(--linea);background:#fff;position:relative;overflow:hidden}
+.evento::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--rosa)}
+.evento.fiesta::after{background:var(--salvia)}
+.evento .hora{font-family:var(--serif);font-size:30px;font-weight:500;line-height:1}
+.evento .hora small{font-size:16px;color:var(--tinta-suave);font-weight:400;margin-left:4px}
+.evento h3{font-family:var(--serif);font-size:22px;font-weight:500;margin:6px 0 2px}
+.evento .lugar{color:var(--tinta-suave);font-size:15px;margin:0 0 12px}
+.evento .tipo{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--terracota)}
+.evento.fiesta .tipo{color:#7f8b70}
+.acciones{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px}
+.dresscode{display:flex;align-items:center;gap:14px;margin-top:16px;padding:14px 16px;border-radius:14px;background:var(--mostaza-claro)}
+.dresscode svg{flex:none}
+.dresscode b{font-family:var(--serif);font-size:20px;font-weight:500;display:block;line-height:1.2}
+.dresscode span{font-size:14px;color:var(--tinta-suave)}
+
+/* RSVP */
+.plazo{display:inline-block;background:var(--rosa-claro);color:var(--tinta);border-radius:999px;padding:6px 14px;font-size:14px;margin-top:10px}
+.persona{border:1px solid var(--linea);border-radius:14px;padding:14px;margin-bottom:12px;background:#fff;transition:border-color .2s}
+.persona.va{border-color:#c9d1bd}
+.persona.nova{border-color:var(--linea);background:#fdf9f5}
+.persona-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.persona-top .nombre{font-family:var(--serif);font-size:21px;font-weight:500;line-height:1.2}
+.etiqueta{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--mostaza-claro);color:#8a6b3a}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{
+  border:1px solid var(--linea);background:var(--papel);border-radius:12px;padding:10px 8px;cursor:pointer;
+  font-size:15px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px
+}
+.seg button[aria-pressed="true"][data-v="si"]{background:var(--salvia-claro);border-color:var(--salvia);color:#4f5c43;font-weight:400}
+.seg button[aria-pressed="true"][data-v="no"]{background:var(--rosa-claro);border-color:var(--rosa);color:#8a4f45;font-weight:400}
+.dieta{margin-top:12px}
+.dieta-label{font-size:13px;color:var(--tinta-suave);margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--linea);background:var(--papel);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer;transition:all .15s}
+.chip[aria-pressed="true"]{background:var(--terracota);border-color:var(--terracota);color:#fff}
+.campo{display:block;width:100%;border:1px solid var(--linea);border-radius:12px;background:#fff;padding:11px 13px;outline:none;transition:border-color .2s, box-shadow .2s;font-size:16px}
+.campo:focus{border-color:var(--rosa);box-shadow:0 0 0 3px var(--rosa-claro)}
+textarea.campo{min-height:88px;resize:vertical}
+.etiqueta-campo{display:block;font-size:14px;color:var(--tinta-suave);margin:16px 0 6px}
+.mt8{margin-top:8px}
+.resumen-rsvp{text-align:center}
+.resumen-rsvp .gracias{font-family:var(--script);font-size:52px;line-height:1.1;color:var(--terracota);margin:0}
+.lista-resumen{list-style:none;padding:0;margin:16px 0;text-align:left}
+.lista-resumen li{display:flex;justify-content:space-between;gap:12px;padding:10px 2px;border-bottom:1px dashed var(--linea)}
+.lista-resumen li:last-child{border-bottom:0}
+.lista-resumen .estado{font-size:14px;white-space:nowrap}
+.estado.si{color:#5f6d52}
+.estado.no{color:#9a5d52}
+.cerrado{background:var(--mostaza-claro);border-radius:12px;padding:12px 14px;font-size:15px;margin-bottom:12px}
+
+/* Música */
+.form-tema{display:grid;gap:8px}
+.form-tema .fila{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lista-temas{list-style:none;padding:0;margin:16px 0 0}
+.lista-temas li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--linea)}
+.lista-temas li:last-child{border-bottom:0}
+.nota{width:34px;height:34px;flex:none;border-radius:50%;background:var(--rosa-claro);display:flex;align-items:center;justify-content:center;color:var(--terracota)}
+.lista-temas .txt{flex:1;min-width:0}
+.lista-temas .txt b{font-weight:400;display:block;overflow-wrap:anywhere}
+.lista-temas .txt span{font-size:14px;color:var(--tinta-suave)}
+.quitar{border:0;background:none;color:var(--tinta-tenue);cursor:pointer;font-size:20px;line-height:1;padding:6px;border-radius:8px}
+.quitar:hover{color:var(--error);background:var(--rosa-claro)}
+
+/* Regalo */
+.datos-banco{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:6px 16px;margin-top:4px}
+.dato{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--linea)}
+.dato:last-child{border-bottom:0}
+.dato .k{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-suave)}
+.dato .v{font-family:var(--serif);font-size:19px;font-weight:500;text-align:right;overflow-wrap:anywhere}
+.dato .v.mono{font-family:ui-monospace,Menlo,monospace;font-size:15px;letter-spacing:.04em;font-weight:400}
+.cbu-fila{display:flex;align-items:center;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+
+/* Instagram */
+.insta{text-align:center}
+.insta .handle{font-family:var(--serif);font-size:28px;font-weight:500;margin:4px 0 14px;overflow-wrap:anywhere}
+
+footer{text-align:center;padding:16px 16px 40px;color:var(--tinta-suave)}
+footer .nombres{font-size:44px;margin:6px 0 0}
+
+/* Toast */
+#toast{
+  position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;
+  background:var(--tinta);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;
+  transition:all .25s;pointer-events:none;z-index:10;max-width:calc(100% - 32px);text-align:center
+}
+#toast.ver{opacity:1;transform:translateX(-50%) translateY(0)}
+.banner-demo{background:var(--mostaza-claro);color:#7a5d2e;text-align:center;font-size:13px;padding:8px 16px;border-bottom:1px solid #ecd9b5}
+.cargando{opacity:.6;pointer-events:none}
+
+.aparece{animation:aparece .7s ease both}
+@keyframes aparece{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.aparece{animation:none}}
+@media (max-width:420px){
+  .cuenta div{min-width:64px}
+  .cuenta b{font-size:26px}
+  .form-tema .fila{grid-template-columns:1fr}
+  section.bloque{padding:24px 16px}
+  .dato{flex-direction:column;align-items:flex-start}
+  .dato .v{text-align:left}
+  .cbu-fila{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- Ornamento reutilizable -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <path id="hoja" d="M0 0 C 7 -9, 21 -9, 28 0 C 21 9, 7 9, 0 0 Z"/>
+    <symbol id="rama" viewBox="0 0 240 60">
+      <path d="M8 32 C 60 22, 120 40, 232 28" fill="none" stroke="#b9a08f" stroke-width="1.2" stroke-linecap="round"/>
+      <use href="#hoja" transform="translate(30 28) rotate(-40)" fill="#d6a49c"/>
+      <use href="#hoja" transform="translate(44 30) rotate(35)" fill="#ddbd88"/>
+      <use href="#hoja" transform="translate(70 29) rotate(-35)" fill="#a3ae95"/>
+      <use href="#hoja" transform="translate(88 31) rotate(40)" fill="#c28567" opacity=".85"/>
+      <circle cx="120" cy="31" r="4.5" fill="#d6a49c"/>
+      <circle cx="127" cy="26" r="3" fill="#ddbd88"/>
+      <use href="#hoja" transform="translate(150 31) rotate(-140) scale(-1 1)" fill="#a3ae95"/>
+      <use href="#hoja" transform="translate(168 30) rotate(-25)" fill="#d6a49c"/>
+      <use href="#hoja" transform="translate(190 29) rotate(30)" fill="#ddbd88"/>
+      <use href="#hoja" transform="translate(206 28) rotate(-30)" fill="#c28567" opacity=".85"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="bannerDemo" class="banner-demo oculto">Modo demo · probá con el código <b>DEMO01</b> o <b>DEMO02</b>. Las respuestas quedan solo en este navegador.</div>
+
+<!-- =================== Puerta =================== -->
+<div id="puerta">
+  <form class="tarjeta-puerta aparece" id="formCodigo" autocomplete="off">
+    <svg class="rama" viewBox="0 0 240 60" aria-hidden="true"><use href="#rama"/></svg>
+    <div class="sobrelinea" style="margin-top:14px">Nos casamos</div>
+    <h1 class="nombres">Nati <span class="y">&amp;</span> Dani</h1>
+    <div class="fecha-grande">11 · 04 · 2027</div>
+    <label class="sr" for="inputCodigo">Código de invitación</label>
+    <input id="inputCodigo" class="campo-codigo" maxlength="10" placeholder="TU CÓDIGO" autocapitalize="characters" spellcheck="false" inputmode="text">
+    <p class="msg-error" id="errorCodigo" role="alert"></p>
+    <button class="btn ancho" type="submit" id="btnEntrar">Ver invitación</button>
+    <p class="ayuda">El código te lo mandamos junto con el link.</p>
+  </form>
+</div>
+
+<!-- =================== Invitación =================== -->
+<div id="invitacion" class="oculto">
+  <main>
+    <header class="portada aparece">
+      <p class="saludo" id="saludo"></p>
+      <svg class="rama" viewBox="0 0 240 60" aria-hidden="true"><use href="#rama"/></svg>
+      <h1 class="nombres">Nati <span class="y">&amp;</span> Dani</h1>
+      <p class="frase">Queremos que seas parte del día en que empezamos a escribir nuestra historia juntos.</p>
+      <div class="fecha-banda" aria-label="Domingo 11 de abril de 2027">
+        <span class="lado">Domingo</span>
+        <span class="dia">11</span>
+        <span class="lado">Abril</span>
+      </div>
+      <div class="sobrelinea">2027</div>
+      <div class="cuenta" id="cuenta" aria-label="Cuenta regresiva">
+        <div><b id="cDias">–</b><span>días</span></div>
+        <div><b id="cHoras">–</b><span>horas</span></div>
+        <div><b id="cMin">–</b><span>min</span></div>
+      </div>
+    </header>
+
+    <!-- Cuándo y dónde -->
+    <section class="bloque">
+      <div class="titulo-bloque">
+        <span class="sobrelinea">Cuándo y dónde</span>
+        <h2>El gran día</h2>
+      </div>
+      <div class="eventos">
+        <article class="evento">
+          <div class="tipo">Ceremonia</div>
+          <div class="hora">12:00<small>hs</small></div>
+          <h3>Parroquia Inmaculada Concepción</h3>
+          <p class="lugar">Av. Sofía Terrero de Santamarina 551, Monte Grande</p>
+          <a class="btn suave chico" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Parroquia%20Inmaculada%20Concepci%C3%B3n%2C%20Av.%20Sof%C3%ADa%20Terrero%20de%20Santamarina%20551%2C%20Monte%20Grande">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            Cómo llegar
+          </a>
+        </article>
+        <article class="evento fiesta">
+          <div class="tipo">Fiesta</div>
+          <div class="hora">13:00<small>hs</small></div>
+          <h3>Jano's Canning</h3>
+          <p class="lugar">Lorenza Zenavilla 443, Canning</p>
+          <a class="btn suave chico" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Jano%27s%20Canning%2C%20Lorenza%20Zenavilla%20443%2C%20Canning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            Cómo llegar
+          </a>
+        </article>
+      </div>
+      <div class="dresscode">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#a76c50" stroke-width="1.3" aria-hidden="true"><path d="M20 6l-6 4 3 4-5 20h16l-5-20 3-4-6-4z"/><path d="M17 14h6"/></svg>
+        <div><span>Código de vestimenta</span><b>Elegante</b></div>
+      </div>
+      <div class="acciones">
+        <a class="btn chico" id="btnGoogleCal" target="_blank" rel="noopener">Agendar en Google</a>
+        <button class="btn suave chico" id="btnIcs" type="button">Agendar en el celu (.ics)</button>
+      </div>
+    </section>
+
+    <!-- Confirmación -->
+    <section class="bloque" id="rsvp">
+      <div class="titulo-bloque">
+        <span class="sobrelinea">Confirmá tu asistencia</span>
+        <h2>¿Nos acompañás?</h2>
+        <span class="plazo" id="textoPlazo"></span>
+      </div>
+      <div id="rsvpCuerpo"></div>
+    </section>
+
+    <!-- Música -->
+    <section class="bloque">
+      <div class="titulo-bloque">
+        <span class="sobrelinea">Música</span>
+        <h2>Ese tema que no puede faltar</h2>
+        <p>Dejanos las canciones que querés bailar. Todas las que quieras.</p>
+      </div>
+      <form class="form-tema" id="formTema" autocomplete="off">
+        <div class="fila">
+          <input class="campo" id="temaTitulo" placeholder="Tema" maxlength="200" aria-label="Nombre del tema">
+          <input class="campo" id="temaArtista" placeholder="Artista" maxlength="200" aria-label="Artista">
+        </div>
+        <input class="campo" id="temaLink" placeholder="Link de Spotify o YouTube (opcional)" maxlength="500" inputmode="url" aria-label="Link opcional">
+        <button class="btn" type="submit" id="btnTema">Sumar a la lista</button>
+      </form>
+      <ul class="lista-temas" id="listaTemas"></ul>
+    </section>
+
+    <!-- Regalo -->
+    <section class="bloque">
+      <div class="titulo-bloque">
+        <span class="sobrelinea">Regalo</span>
+        <h2>Luna de miel</h2>
+        <p>Nuestro mejor regalo es que estés ese día con nosotros. Si además querés ayudarnos con la luna de miel, te dejamos los datos.</p>
+      </div>
+      <div class="datos-banco">
+        <div class="dato"><span class="k">Titular</span><span class="v" id="regTitular"></span></div>
+        <div class="dato"><span class="k">Banco</span><span class="v" id="regBanco"></span></div>
+        <div class="dato">
+          <span class="k">CBU</span>
+          <span class="cbu-fila"><span class="v mono" id="regCbu"></span><button class="btn suave chico" type="button" id="btnCopiarCbu">Copiar</button></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Instagram -->
+    <section class="bloque insta">
+      <div class="titulo-bloque">
+        <span class="sobrelinea">Fotos</span>
+        <h2>Compartí el momento</h2>
+        <p>Seguí la cuenta de la boda y etiquetanos en tus fotos y videos de ese día.</p>
+      </div>
+      <div class="handle" id="instaHandle"></div>
+      <a class="btn" id="instaLink" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+        Ir al Instagram
+      </a>
+    </section>
+
+    <footer>
+      <svg class="rama" viewBox="0 0 240 60" aria-hidden="true"><use href="#rama"/></svg>
+      <p class="nombres">Nati <span class="y">&amp;</span> Dani</p>
+      <p style="font-size:14px;margin:4px 0 18px">¡Te esperamos!</p>
+      <button class="link-btn" type="button" id="btnSalir">Entrar con otro código</button>
+    </footer>
+  </main>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN — completá con los datos de tu proyecto de Supabase
+   (Project Settings → API). Si quedan vacíos, la página corre en modo demo.
+   ===================================================================== */
+const CONFIG = {
+  SUPABASE_URL: 'https://fycqjwxljwsqqibnkdtc.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_OP0gMdG6lNrWP-XO0M0UUA_q-hVWBHg'
+};
+
+const BODA = {
+  inicio: '2027-04-11T12:00:00-03:00',
+  fin:    '2027-04-11T20:00:00-03:00',
+  instagram: { usuario: 'natiydani.boda', url: 'https://www.instagram.com/natiydani.boda/' }, // ← ejemplo, cambiar
+  regalo: { titular: 'Natalia Belén Leales', banco: 'Banco Galicia', cbu: '0070180430004062332685' }
+};
+
+/* ===================================================================== */
+const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const DIETAS = [
+  ['ninguna', 'Sin restricción'],
+  ['vegetariano', 'Vegetariano'],
+  ['vegano', 'Vegano'],
+  ['celiaco', 'Celíaco'],
+  ['otro', 'Otra']
+];
+const dietaTexto = (d, det) => d === 'otro' ? (det || 'Otra') : (DIETAS.find(x => x[0] === d) || ['', ''])[1];
+
+function hoyAR() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date());
+}
+function fechaLarga(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+function guardarLocal(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
+function leerLocal(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+let toastT;
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('ver');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('ver'), 2600);
+}
+
+/* ---------------- Datos: Supabase o demo ---------------- */
+let sb = null;
+function cargarScript(src) {
+  return new Promise((ok, mal) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
+}
+async function initSb() {
+  if (DEMO || sb) return;
+  await cargarScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
+  sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, { auth: { persistSession: false } });
+}
+
+/* --- Demo (misma forma de datos que la base real) --- */
+const DEMO_KEY = 'boda_demo_v1';
+let demoMem = null;
+function uid() { return (crypto.randomUUID ? crypto.randomUUID() : 'id' + Math.random().toString(36).slice(2) + Date.now()); }
+function demoSemilla() {
+  const p = (nombre, es_nino, orden) => ({ id: uid(), nombre, es_nino, orden, asiste: null, dieta: 'ninguna', dieta_detalle: null });
+  return {
+    ajustes: { fecha_limite: '2027-02-01', url_invitacion: '' },
+    grupos: [
+      { id: uid(), nombre: 'Familia Pérez', codigo: 'DEMO01', notas: 'Primos de Nati', fecha_limite: null, mensaje: null, respondido_at: null, creado_at: new Date().toISOString(),
+        integrantes: [p('Juan Pérez', false, 0), p('María Gómez', false, 1), p('Sofía', true, 2), p('Tomás', true, 3)], temas: [] },
+      { id: uid(), nombre: 'Caro y Martín', codigo: 'DEMO02', notas: '', fecha_limite: null, mensaje: null, respondido_at: null, creado_at: new Date().toISOString(),
+        integrantes: [p('Carolina Díaz', false, 0), p('Martín Ruiz', false, 1)], temas: [] }
+    ]
+  };
+}
+function demoLeer() {
+  if (demoMem) return demoMem;
+  const s = leerLocal(DEMO_KEY);
+  if (s) { try { demoMem = JSON.parse(s); return demoMem; } catch (e) {} }
+  demoMem = demoSemilla(); demoGuardar(demoMem); return demoMem;
+}
+function demoGuardar(d) { demoMem = d; guardarLocal(DEMO_KEY, JSON.stringify(d)); }
+function demoGrupo(d, codigo) { return d.grupos.find(g => !g.suplente && g.codigo === String(codigo || '').trim().toUpperCase()); }
+function demoVista(d, g) {
+  const lim = g.fecha_limite || d.ajustes.fecha_limite;
+  return {
+    grupo: g.nombre, mensaje: g.mensaje, respondido_at: g.respondido_at, fecha_limite: lim, abierto: hoyAR() <= lim,
+    integrantes: [...g.integrantes].sort((a, b) => a.orden - b.orden).map(({ id, nombre, es_nino, asiste, dieta, dieta_detalle }) => ({ id, nombre, es_nino, asiste, dieta, dieta_detalle })),
+    temas: g.temas.map(({ id, titulo, artista, link }) => ({ id, titulo, artista, link }))
+  };
+}
+const pausa = (ms) => new Promise(r => setTimeout(r, ms));
+
+const api = {
+  async obtener(codigo) {
+    if (DEMO) { await pausa(250); const d = demoLeer(); const g = demoGrupo(d, codigo); return g ? demoVista(d, g) : null; }
+    await initSb();
+    const { data, error } = await sb.rpc('boda_invitacion', { p_codigo: codigo });
+    if (error) throw error; return data;
+  },
+  async responder(codigo, integrantes, mensaje) {
+    if (DEMO) {
+      await pausa(400); const d = demoLeer(); const g = demoGrupo(d, codigo);
+      if (!g) throw new Error('codigo_invalido');
+      if (hoyAR() > (g.fecha_limite || d.ajustes.fecha_limite)) throw new Error('plazo_vencido');
+      integrantes.forEach(r => { const i = g.integrantes.find(x => x.id === r.id); if (i) { i.asiste = r.asiste; if (r.asiste === false) i.mesa_id = null; i.dieta = r.dieta; i.dieta_detalle = (r.dieta_detalle || '').trim() || null; } });
+      g.mensaje = (mensaje || '').trim() || null; g.respondido_at = new Date().toISOString();
+      demoGuardar(d); return demoVista(d, g);
+    }
+    await initSb();
+    const { data, error } = await sb.rpc('boda_responder', { p_codigo: codigo, p_integrantes: integrantes, p_mensaje: mensaje });
+    if (error) throw error; return data;
+  },
+  async temaAgregar(codigo, t) {
+    if (DEMO) {
+      await pausa(200); const d = demoLeer(); const g = demoGrupo(d, codigo);
+      const link = /^https?:\/\//i.test(t.link || '') ? t.link.trim() : null;
+      g.temas.push({ id: uid(), titulo: t.titulo.trim(), artista: (t.artista || '').trim() || null, link, creado_at: new Date().toISOString() });
+      demoGuardar(d); return demoVista(d, g);
+    }
+    await initSb();
+    const { data, error } = await sb.rpc('boda_tema_agregar', { p_codigo: codigo, p_titulo: t.titulo, p_artista: t.artista, p_link: t.link });
+    if (error) throw error; return data;
+  },
+  async temaBorrar(codigo, id) {
+    if (DEMO) {
+      await pausa(150); const d = demoLeer(); const g = demoGrupo(d, codigo);
+      g.temas = g.temas.filter(x => x.id !== id); demoGuardar(d); return demoVista(d, g);
+    }
+    await initSb();
+    const { data, error } = await sb.rpc('boda_tema_borrar', { p_codigo: codigo, p_tema: id });
+    if (error) throw error; return data;
+  }
+};
+
+function mensajeError(e) {
+  const m = String(e && (e.message || e)) || '';
+  if (m.includes('plazo_vencido')) return 'El plazo para confirmar ya cerró. Escribinos y lo vemos.';
+  if (m.includes('codigo_invalido')) return 'El código no es válido.';
+  if (m.includes('demasiados_temas')) return 'Ya sumaron un montón de temas. ¡Gracias!';
+  return 'Hubo un problema de conexión. Probá de nuevo en un ratito.';
+}
+
+/* ---------------- Estado ---------------- */
+let codigo = null;
+let inv = null;
+let editando = false;
+let borrador = {};
+let mensajeBorrador = '';
+
+/* ---------------- Puerta ---------------- */
+async function entrar(c, silencioso) {
+  c = String(c || '').trim().toUpperCase();
+  if (!c) { $('errorCodigo').textContent = 'Ingresá tu código.'; return; }
+  const btn = $('btnEntrar');
+  btn.disabled = true; btn.textContent = 'Abriendo…'; $('errorCodigo').textContent = '';
+  try {
+    const data = await api.obtener(c);
+    if (!data) {
+      if (!silencioso) $('errorCodigo').textContent = 'No encontramos ese código. Revisalo e intentá de nuevo.';
+      guardarLocal('boda_codigo', null);
+      return;
+    }
+    codigo = c; inv = data; guardarLocal('boda_codigo', c);
+    mostrarInvitacion();
+  } catch (e) {
+    $('errorCodigo').textContent = mensajeError(e);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Ver invitación';
+  }
+}
+
+$('formCodigo').addEventListener('submit', (e) => { e.preventDefault(); entrar($('inputCodigo').value); });
+$('inputCodigo').addEventListener('input', (e) => { e.target.value = e.target.value.toUpperCase().replace(/\s/g, ''); });
+
+$('btnSalir').addEventListener('click', () => {
+  guardarLocal('boda_codigo', null); codigo = null; inv = null;
+  $('invitacion').classList.add('oculto'); $('puerta').classList.remove('oculto');
+  $('inputCodigo').value = ''; window.scrollTo(0, 0);
+});
+
+/* ---------------- Invitación ---------------- */
+function mostrarInvitacion() {
+  $('puerta').classList.add('oculto');
+  $('invitacion').classList.remove('oculto');
+  window.scrollTo(0, 0);
+  $('saludo').textContent = '¡Hola, ' + inv.grupo + '!';
+  editando = !inv.respondido_at && inv.abierto;
+  prepararBorrador();
+  renderRsvp();
+  renderTemas();
+  $('regTitular').textContent = BODA.regalo.titular;
+  $('regBanco').textContent = BODA.regalo.banco;
+  $('regCbu').textContent = BODA.regalo.cbu;
+  $('instaHandle').textContent = '@' + BODA.instagram.usuario;
+  $('instaLink').href = BODA.instagram.url;
+}
+
+function prepararBorrador() {
+  borrador = {};
+  inv.integrantes.forEach(i => { borrador[i.id] = { asiste: i.asiste, dieta: i.dieta || 'ninguna', dieta_detalle: i.dieta_detalle || '' }; });
+  mensajeBorrador = inv.mensaje || '';
+}
+
+function renderRsvp() {
+  const cuerpo = $('rsvpCuerpo');
+  $('textoPlazo').textContent = inv.abierto
+    ? 'Confirmá antes del ' + fechaLarga(inv.fecha_limite)
+    : 'El plazo para confirmar cerró el ' + fechaLarga(inv.fecha_limite);
+
+  if (!editando) {
+    const van = inv.integrantes.filter(i => i.asiste === true).length;
+    const sinResp = !inv.respondido_at;
+    cuerpo.innerHTML = `
+      <div class="resumen-rsvp">
+        ${sinResp ? `<div class="cerrado">No llegamos a recibir tu confirmación. Si todavía querés venir, escribinos así lo vemos.</div>`
+                  : `<p class="gracias">¡Gracias!</p><p style="margin:4px 0 0;color:var(--tinta-suave)">${van === 0 ? 'Recibimos tu respuesta. ¡Te vamos a extrañar!' : `Confirmaron ${van} de ${inv.integrantes.length}.`}</p>`}
+        <ul class="lista-resumen">
+          ${inv.integrantes.map(i => `
+            <li>
+              <span>${esc(i.nombre)}${i.asiste && i.dieta !== 'ninguna' ? `<br><small style="color:var(--tinta-suave)">${esc(dietaTexto(i.dieta, i.dieta_detalle))}</small>` : ''}</span>
+              <span class="estado ${i.asiste === true ? 'si' : i.asiste === false ? 'no' : ''}">${i.asiste === true ? '✓ Va' : i.asiste === false ? '✕ No va' : 'Sin responder'}</span>
+            </li>`).join('')}
+        </ul>
+        ${inv.mensaje ? `<p style="font-family:var(--serif);font-style:italic;font-size:18px;color:var(--tinta-suave)">“${esc(inv.mensaje)}”</p>` : ''}
+        ${inv.abierto ? `<button class="btn suave" type="button" id="btnModificar">Modificar respuesta</button>` : ''}
+      </div>`;
+    const bm = $('btnModificar');
+    if (bm) bm.onclick = () => { editando = true; prepararBorrador(); renderRsvp(); };
+    return;
+  }
+
+  cuerpo.innerHTML = `
+    <p style="text-align:center;margin:0 0 16px;color:var(--tinta-suave)">Contanos quiénes vienen.${inv.integrantes.length > 1 ? ' Si alguien no puede, marcalo y listo.' : ''}</p>
+    <div id="personas">
+      ${inv.integrantes.map(i => personaHtml(i)).join('')}
+    </div>
+    <label class="etiqueta-campo" for="mensaje">¿Algo que quieras decirnos? (opcional)</label>
+    <textarea class="campo" id="mensaje" maxlength="1000" placeholder="Un mensaje, una aclaración…">${esc(mensajeBorrador)}</textarea>
+    <p class="msg-error" id="errorRsvp" role="alert"></p>
+    <button class="btn ancho" type="button" id="btnEnviar">Enviar confirmación</button>
+    ${inv.respondido_at ? `<p style="text-align:center;margin:12px 0 0"><button class="link-btn" type="button" id="btnCancelarEdicion">Cancelar</button></p>` : ''}
+  `;
+  $('mensaje').addEventListener('input', e => { mensajeBorrador = e.target.value; });
+  $('btnEnviar').onclick = enviarRsvp;
+  const bc = $('btnCancelarEdicion');
+  if (bc) bc.onclick = () => { editando = false; renderRsvp(); };
+}
+
+function personaHtml(i) {
+  const b = borrador[i.id];
+  const clase = b.asiste === true ? 'va' : b.asiste === false ? 'nova' : '';
+  return `
+    <div class="persona ${clase}" data-id="${esc(i.id)}">
+      <div class="persona-top">
+        <span class="nombre">${esc(i.nombre)}</span>
+        ${i.es_nino ? '<span class="etiqueta">Menor</span>' : ''}
+      </div>
+      <div class="seg" role="group" aria-label="Asistencia de ${esc(i.nombre)}">
+        <button type="button" data-accion="asiste" data-v="si" aria-pressed="${b.asiste === true}">✓ Va</button>
+        <button type="button" data-accion="asiste" data-v="no" aria-pressed="${b.asiste === false}">✕ No va</button>
+      </div>
+      ${b.asiste === true ? `
+        <div class="dieta">
+          <div class="dieta-label">¿Alguna restricción alimentaria?</div>
+          <div class="chips">
+            ${DIETAS.map(([v, t]) => `<button type="button" class="chip" data-accion="dieta" data-v="${v}" aria-pressed="${b.dieta === v}">${t}</button>`).join('')}
+          </div>
+          ${b.dieta === 'otro' ? `<input class="campo mt8" data-accion="detalle" maxlength="300" placeholder="Contanos cuál (ej.: intolerancia a la lactosa)" value="${esc(b.dieta_detalle)}">` : ''}
+        </div>` : ''}
+    </div>`;
+}
+
+$('rsvpCuerpo').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-accion]');
+  if (!btn) return;
+  const card = btn.closest('.persona'); const id = card.dataset.id; const b = borrador[id];
+  if (btn.dataset.accion === 'asiste') b.asiste = btn.dataset.v === 'si';
+  if (btn.dataset.accion === 'dieta') b.dieta = btn.dataset.v;
+  if ($('errorRsvp')) $('errorRsvp').textContent = '';
+  const i = inv.integrantes.find(x => x.id === id);
+  card.outerHTML = personaHtml(i);
+  if (btn.dataset.accion === 'dieta' && b.dieta === 'otro') {
+    const inp = document.querySelector(`.persona[data-id="${CSS.escape(id)}"] input[data-accion="detalle"]`);
+    if (inp) inp.focus();
+  }
+});
+$('rsvpCuerpo').addEventListener('input', (e) => {
+  if (e.target.dataset.accion === 'detalle') borrador[e.target.closest('.persona').dataset.id].dieta_detalle = e.target.value;
+});
+
+async function enviarRsvp() {
+  const faltan = inv.integrantes.filter(i => borrador[i.id].asiste == null);
+  if (faltan.length) {
+    $('errorRsvp').textContent = 'Falta marcar si ' + (faltan.length === 1 ? faltan[0].nombre + ' va o no.' : 'van o no: ' + faltan.map(f => f.nombre).join(', ') + '.');
+    return;
+  }
+  const otrosSinDetalle = inv.integrantes.filter(i => borrador[i.id].asiste && borrador[i.id].dieta === 'otro' && !borrador[i.id].dieta_detalle.trim());
+  if (otrosSinDetalle.length) { $('errorRsvp').textContent = 'Contanos cuál es la restricción de ' + otrosSinDetalle[0].nombre + '.'; return; }
+
+  const payload = inv.integrantes.map(i => {
+    const b = borrador[i.id];
+    return { id: i.id, asiste: b.asiste, dieta: b.asiste ? b.dieta : 'ninguna', dieta_detalle: b.asiste && b.dieta === 'otro' ? b.dieta_detalle.trim() : null };
+  });
+  const btn = $('btnEnviar'); btn.disabled = true; btn.textContent = 'Enviando…'; $('errorRsvp').textContent = '';
+  try {
+    inv = await api.responder(codigo, payload, mensajeBorrador);
+    editando = false; renderRsvp();
+    $('rsvp').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    toast('¡Confirmación enviada!');
+  } catch (e) {
+    $('errorRsvp').textContent = mensajeError(e);
+    if (String(e.message || e).includes('plazo_vencido')) { try { inv = await api.obtener(codigo); } catch (_) {} }
+  } finally {
+    if ($('btnEnviar')) { $('btnEnviar').disabled = false; $('btnEnviar').textContent = 'Enviar confirmación'; }
+  }
+}
+
+/* ---------------- Música ---------------- */
+function renderTemas() {
+  const ul = $('listaTemas');
+  if (!inv.temas.length) { ul.innerHTML = ''; return; }
+  ul.innerHTML = inv.temas.map(t => `
+    <li>
+      <span class="nota" aria-hidden="true">♪</span>
+      <span class="txt">
+        <b>${esc(t.titulo)}</b>
+        <span>${esc(t.artista || '')}${t.link ? `${t.artista ? ' · ' : ''}<a href="${esc(t.link)}" target="_blank" rel="noopener nofollow">escuchar</a>` : ''}</span>
+      </span>
+      <button class="quitar" type="button" data-id="${esc(t.id)}" aria-label="Quitar ${esc(t.titulo)}">×</button>
+    </li>`).join('');
+}
+$('formTema').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const titulo = $('temaTitulo').value.trim();
+  if (!titulo) { $('temaTitulo').focus(); toast('Escribí el nombre del tema'); return; }
+  const btn = $('btnTema'); btn.disabled = true;
+  try {
+    inv = await api.temaAgregar(codigo, { titulo, artista: $('temaArtista').value.trim(), link: $('temaLink').value.trim() });
+    $('temaTitulo').value = ''; $('temaArtista').value = ''; $('temaLink').value = '';
+    renderTemas(); toast('¡Tema sumado! 🎶');
+  } catch (err) { toast(mensajeError(err)); }
+  finally { btn.disabled = false; }
+});
+$('listaTemas').addEventListener('click', async (e) => {
+  const b = e.target.closest('.quitar'); if (!b) return;
+  b.disabled = true;
+  try { inv = await api.temaBorrar(codigo, b.dataset.id); renderTemas(); }
+  catch (err) { toast(mensajeError(err)); b.disabled = false; }
+});
+
+/* ---------------- Regalo ---------------- */
+async function copiar(texto) {
+  try { await navigator.clipboard.writeText(texto); return true; }
+  catch (e) {
+    const ta = document.createElement('textarea'); ta.value = texto; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (_) {} ta.remove(); return ok;
+  }
+}
+$('btnCopiarCbu').addEventListener('click', async () => { toast(await copiar(BODA.regalo.cbu) ? 'CBU copiado' : 'No se pudo copiar, mantené apretado el número'); });
+
+/* ---------------- Calendario ---------------- */
+function aUtc(iso) { return new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
+const DETALLE_CAL = 'Misa 12 hs: Parroquia Inmaculada Concepción, Av. Sofía Terrero de Santamarina 551, Monte Grande.\nFiesta 13 hs: Jano\'s Canning, Lorenza Zenavilla 443, Canning.\nDress code: elegante.';
+$('btnGoogleCal').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+  + '&text=' + encodeURIComponent('Casamiento de Nati y Dani')
+  + '&dates=' + aUtc(BODA.inicio) + '/' + aUtc(BODA.fin)
+  + '&details=' + encodeURIComponent(DETALLE_CAL)
+  + '&location=' + encodeURIComponent('Parroquia Inmaculada Concepción, Av. Sofía Terrero de Santamarina 551, Monte Grande');
+$('btnIcs').addEventListener('click', () => {
+  const ics = [
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//NatiyDani//Boda//ES', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
+    'UID:boda-natiydani-20270411@invitacion', 'DTSTAMP:' + aUtc(new Date().toISOString()),
+    'DTSTART:' + aUtc(BODA.inicio), 'DTEND:' + aUtc(BODA.fin),
+    'SUMMARY:Casamiento de Nati y Dani',
+    'LOCATION:Parroquia Inmaculada Concepción\\, Av. Sofía Terrero de Santamarina 551\\, Monte Grande',
+    'DESCRIPTION:' + DETALLE_CAL.replace(/,/g, '\\,').replace(/\n/g, '\\n'),
+    'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:Mañana es el casamiento de Nati y Dani', 'END:VALARM',
+    'END:VEVENT', 'END:VCALENDAR'
+  ].join('\r\n');
+  const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+  const a = document.createElement('a'); a.href = url; a.download = 'casamiento-nati-y-dani.ics';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+});
+
+/* ---------------- Cuenta regresiva ---------------- */
+function tic() {
+  const ms = new Date(BODA.inicio) - new Date();
+  if (ms <= 0) { $('cuenta').innerHTML = '<div style="min-width:auto;padding:10px 18px"><b style="font-size:24px">¡Hoy es el día!</b></div>'; return; }
+  const min = Math.floor(ms / 60000);
+  $('cDias').textContent = Math.floor(min / 1440);
+  $('cHoras').textContent = Math.floor((min % 1440) / 60);
+  $('cMin').textContent = min % 60;
+}
+tic(); setInterval(tic, 30000);
+
+/* ---------------- Arranque ---------------- */
+if (DEMO) $('bannerDemo').classList.remove('oculto');
+(function () {
+  const p = new URLSearchParams(location.search);
+  const c = p.get('c') || p.get('codigo') || leerLocal('boda_codigo');
+  if (c) { $('inputCodigo').value = c.toUpperCase(); entrar(c, !p.get('c') && !p.get('codigo')); }
+})();
+</script>
+</body>
+</html>

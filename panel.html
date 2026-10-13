@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Panel · Nati & Dani</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#f7efe6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --fondo:#f7efe6;--papel:#fffaf4;--blanco:#fff;
+  --tinta:#4a3730;--tinta-suave:#7d665c;--tinta-tenue:#a8928a;--linea:#ead8ca;
+  --rosa:#d6a49c;--rosa-claro:#f3e0da;--terracota:#c28567;--terracota-osc:#a76c50;
+  --salvia:#a3ae95;--salvia-claro:#e4e9dc;--salvia-osc:#5f6d52;
+  --mostaza:#ddbd88;--mostaza-claro:#f5e8d0;--error:#b4574a;
+  --serif:"Cormorant Garamond",Georgia,serif;--script:"Pinyon Script",cursive;--sans:"Jost",system-ui,sans-serif;
+  --sombra:0 1px 2px rgba(74,55,48,.05),0 6px 20px -10px rgba(74,55,48,.18);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.5;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--terracota-osc)}
+.oculto{display:none!important}
+h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0}
+
+.btn{appearance:none;border:0;cursor:pointer;border-radius:999px;padding:10px 18px;background:var(--terracota);color:#fff;font-weight:400;font-size:14px;display:inline-flex;align-items:center;gap:6px;justify-content:center;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--terracota-osc)}
+.btn[disabled]{opacity:.55;cursor:default}
+.btn.suave{background:var(--papel);color:var(--tinta);border:1px solid var(--linea)}
+.btn.suave:hover{background:var(--rosa-claro)}
+.btn.chico{padding:6px 12px;font-size:13px}
+.btn.peligro{background:none;color:var(--error);border:1px solid #e7c3bc}
+.btn.peligro:hover{background:#fbeae6}
+.btn.wa{background:#4f8a5b}.btn.wa:hover{background:#3f7349}
+.campo{width:100%;border:1px solid var(--linea);border-radius:10px;background:#fff;padding:9px 11px;outline:none;font-size:15px}
+.campo:focus{border-color:var(--rosa);box-shadow:0 0 0 3px var(--rosa-claro)}
+select.campo{padding:8px 9px}
+label.lbl{display:block;font-size:13px;color:var(--tinta-suave);margin:12px 0 4px}
+
+/* Login */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.caja-login{width:100%;max-width:360px;background:var(--papel);border:1px solid var(--linea);border-radius:22px;padding:30px 24px;box-shadow:var(--sombra);text-align:center}
+.caja-login .nombres{font-family:var(--script);font-size:46px;line-height:1.1;margin:0}
+.caja-login form{text-align:left;margin-top:12px}
+.err{color:var(--error);font-size:14px;min-height:1.3em;margin:8px 0}
+
+/* App */
+header.top{position:sticky;top:0;z-index:5;background:rgba(247,239,230,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--linea)}
+.top-in{max-width:960px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.top-in .marca{font-family:var(--script);font-size:30px;line-height:1;flex:1}
+.top-in .marca small{font-family:var(--sans);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-suave);margin-left:8px}
+nav.tabs{max-width:960px;margin:0 auto;padding:0 12px 8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{border:1px solid var(--linea);background:var(--papel);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:14px;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
+main{max-width:960px;margin:0 auto;padding:16px 16px 60px}
+.banner-demo{background:var(--mostaza-claro);color:#7a5d2e;text-align:center;font-size:13px;padding:7px 16px;border-bottom:1px solid #ecd9b5}
+
+.grid-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.stat{background:var(--papel);border:1px solid var(--linea);border-radius:16px;padding:12px 14px}
+.stat .k{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-suave)}
+.stat .v{font-family:var(--serif);font-size:36px;font-weight:600;line-height:1.1}
+.stat .s{font-size:13px;color:var(--tinta-suave)}
+.stat.si{background:var(--salvia-claro);border-color:#cfd7c4}
+.stat.no{background:var(--rosa-claro);border-color:#ebcfc8}
+.stat.alerta{background:var(--mostaza-claro);border-color:#ecd9b5}
+.barra{height:8px;border-radius:99px;background:var(--linea);overflow:hidden;margin-top:8px;display:flex}
+.barra i{display:block;height:100%}
+.tarjeta{background:var(--papel);border:1px solid var(--linea);border-radius:16px;padding:16px;margin-top:14px}
+.tarjeta h2{font-size:22px;margin-bottom:8px}
+.fila-flex{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.esp{flex:1}
+.muted{color:var(--tinta-suave)}
+.chiquito{font-size:13px}
+.leyenda{font-size:13px;color:var(--tinta-suave);margin:0 0 12px}
+
+.herr{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.herr .campo{flex:1;min-width:180px}
+.filtros{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filtros button{border:1px solid var(--linea);background:var(--papel);border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer}
+.filtros button[aria-pressed="true"]{background:var(--terracota);border-color:var(--terracota);color:#fff}
+
+.grupo{background:var(--papel);border:1px solid var(--linea);border-radius:16px;padding:14px 16px;margin-bottom:10px}
+.grupo.sup{border-style:dashed;background:#fbf7f2}
+.grupo-cab{display:flex;align-items:flex-start;gap:10px}
+.grupo-cab h3{font-size:21px;line-height:1.2}
+.codigo{font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:.12em;background:#fff;border:1px dashed var(--rosa);border-radius:8px;padding:2px 8px;white-space:nowrap}
+.grupo.sup .codigo{opacity:.5;text-decoration:line-through}
+.pill{font-size:12px;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.pill.ok{background:var(--salvia-claro);color:var(--salvia-osc)}
+.pill.pend{background:var(--mostaza-claro);color:#8a6b3a}
+.pill.gris{background:#efe8e1;color:var(--tinta-suave)}
+.pill.menor{background:var(--mostaza-claro);color:#8a6b3a;font-size:11px;padding:1px 7px}
+.pill.edad{background:#fff;border:1px dashed var(--mostaza);color:#8a6b3a;font-size:11px;padding:0 7px}
+.pill.mesa{background:#efe8e1;color:var(--tinta-suave);font-size:11px;padding:1px 7px}
+.integrantes{list-style:none;padding:0;margin:10px 0 0}
+.integrantes li{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:15px;flex-wrap:wrap}
+.ico{width:20px;text-align:center;flex:none}
+.ico.si{color:var(--salvia-osc)}.ico.no{color:var(--error)}.ico.pend{color:var(--tinta-tenue)}
+.dieta-tag{font-size:12px;color:var(--terracota-osc);background:var(--rosa-claro);border-radius:6px;padding:1px 6px}
+.mensaje{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--tinta-suave);margin:8px 0 0;padding-left:10px;border-left:2px solid var(--rosa)}
+.notas{font-size:13px;color:var(--tinta-suave);margin-top:6px}
+.grupo-acc{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{text-align:left;font-weight:400;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-suave);padding:8px 6px;border-bottom:1px solid var(--linea)}
+table.t td{padding:9px 6px;border-bottom:1px solid var(--linea);vertical-align:top}
+table.t tr:last-child td{border-bottom:0}
+.vacio{text-align:center;color:var(--tinta-suave);padding:28px 10px}
+
+/* Mesas */
+.mesas{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.mesa{background:var(--papel);border:1px solid var(--linea);border-radius:16px;padding:12px 14px;min-width:0}
+.mesa.llena{border-color:var(--mostaza);background:#fdf6ea}
+.mesa.sin{grid-column:1/-1;background:var(--mostaza-claro);border-color:#ecd9b5}
+.mesa-cab{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.mesa-cab input.nom{flex:1;min-width:0;font-family:var(--serif);font-size:20px;font-weight:600;border:1px solid transparent;background:transparent;border-radius:8px;padding:2px 6px}
+.mesa-cab input.nom:hover,.mesa-cab input.nom:focus{border-color:var(--linea);background:#fff;outline:none}
+.mesa-cab h3{flex:1;font-size:20px}
+.cap{font-size:13px;color:var(--tinta-suave);white-space:nowrap}
+.mesa.llena .cap{color:#8a6b3a;font-weight:500}
+.cap input{width:2.8rem;text-align:center;border:1px solid var(--linea);border-radius:8px;padding:2px 4px;background:#fff}
+.mesa ul{list-style:none;margin:0;padding:0}
+.mesa li{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid var(--linea);font-size:14px}
+.mesa li:first-child{border-top:0}
+.mesa li .nm{flex:1;min-width:0}
+.mesa li .gr{display:block;font-size:12px;color:var(--tinta-suave)}
+.mesa li select,.sin-grupo select{width:7.2rem;border:1px solid var(--linea);border-radius:8px;padding:3px 4px;background:#fff;font-size:13px}
+.sin-grupo{border-top:1px solid #ecd9b5;padding:8px 0}
+.sin-grupo:first-of-type{border-top:0}
+.sin-grupo .cab{display:flex;align-items:center;gap:8px;font-weight:400}
+.sin-grupo .cab b{flex:1;font-weight:500}
+.sin-grupo .nombres-sin{font-size:13px;color:var(--tinta-suave)}
+.vacia{font-size:13px;color:var(--tinta-tenue);font-style:italic}
+
+/* Editor */
+.velo{position:fixed;inset:0;background:rgba(74,55,48,.35);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+@media (min-width:640px){.velo{align-items:center}}
+.hoja{background:var(--papel);width:100%;max-width:620px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:20px 18px 18px}
+@media (min-width:640px){.hoja{border-radius:22px}}
+.hoja h2{font-size:26px}
+.persona-ed{border:1px solid var(--linea);border-radius:12px;padding:10px;margin-bottom:8px;background:#fff}
+.persona-ed.mueve{background:#fbf7f2;border-style:dashed}
+.persona-ed .l1{display:flex;gap:8px;align-items:center}
+.persona-ed .l2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.persona-ed .aviso-mueve{font-size:12px;color:var(--terracota-osc);margin-top:6px}
+.para-todos{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.check{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--tinta-suave);margin-top:12px}
+.x{border:0;background:none;font-size:22px;line-height:1;color:var(--tinta-tenue);cursor:pointer;padding:4px 8px;border-radius:8px}
+.x:hover{background:var(--rosa-claro);color:var(--error)}
+.pie-hoja{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;position:sticky;bottom:-18px;background:var(--papel);padding:12px 0 4px}
+
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(16px);opacity:0;background:var(--tinta);color:#fff;padding:9px 16px;border-radius:999px;font-size:14px;transition:all .25s;z-index:40;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+#toast.ver{opacity:1;transform:translateX(-50%)}
+@media (max-width:520px){
+  table.t .ocultar-movil{display:none}
+  .stat .v{font-size:30px}
+}
+</style>
+</head>
+<body>
+
+<div id="bannerDemo" class="banner-demo oculto">Modo demo · los datos viven solo en este navegador y son los mismos que ve la invitación demo.</div>
+
+<!-- Login -->
+<div id="login" class="oculto">
+  <div class="caja-login">
+    <p class="nombres">Nati &amp; Dani</p>
+    <div class="muted chiquito" style="letter-spacing:.2em;text-transform:uppercase">Panel de los novios</div>
+    <form id="formLogin">
+      <label class="lbl" for="email">Mail</label>
+      <input class="campo" id="email" type="email" autocomplete="username" required>
+      <label class="lbl" for="pass">Contraseña</label>
+      <input class="campo" id="pass" type="password" autocomplete="current-password" required>
+      <p class="err" id="errLogin" role="alert"></p>
+      <button class="btn" style="width:100%" id="btnLogin">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app" class="oculto">
+  <header class="top">
+    <div class="top-in">
+      <div class="marca">Nati &amp; Dani<small>panel</small></div>
+      <button class="btn suave chico" id="btnRefrescar" title="Actualizar">↻ Actualizar</button>
+      <button class="btn suave chico" id="btnSalir">Salir</button>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
+      <button role="tab" data-tab="invitados" aria-selected="false">Invitados</button>
+      <button role="tab" data-tab="suplentes" aria-selected="false">Suplentes</button>
+      <button role="tab" data-tab="mesas" aria-selected="false">Mesas</button>
+      <button role="tab" data-tab="comida" aria-selected="false">Comida</button>
+      <button role="tab" data-tab="musica" aria-selected="false">Música</button>
+      <button role="tab" data-tab="ajustes" aria-selected="false">Ajustes</button>
+    </nav>
+  </header>
+  <main id="vista"></main>
+</div>
+
+<div id="editor" class="velo oculto"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN — los mismos datos que en index.html
+   ===================================================================== */
+const CONFIG = {
+  SUPABASE_URL: 'https://fycqjwxljwsqqibnkdtc.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_OP0gMdG6lNrWP-XO0M0UUA_q-hVWBHg'
+};
+/* ===================================================================== */
+
+const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const DIETAS = { ninguna: 'Sin restricción', vegetariano: 'Vegetariano', vegano: 'Vegano', celiaco: 'Celíaco', otro: 'Otra' };
+const dietaTexto = (d, det) => d === 'otro' ? (det ? 'Otra: ' + det : 'Otra') : DIETAS[d] || d;
+const fechaCorta = (iso) => iso ? new Date(iso).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' }) + ' ' + new Date(iso).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false }) : '';
+const fechaLarga = (d) => { if (!d) return ''; const [y, m, dd] = d.split('-').map(Number); return new Date(y, m - 1, dd).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }); };
+function guardarLocal(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function leerLocal(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+let toastT;
+function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('ver'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('ver'), 2600); }
+function uid() { return crypto.randomUUID ? crypto.randomUUID() : 'id' + Math.random().toString(36).slice(2) + Date.now(); }
+const porNombre = (a, b) => a.nombre.localeCompare(b.nombre, 'es');
+
+/* ---------------- Store ---------------- */
+let sb = null;
+function cargarScript(src) { return new Promise((ok, mal) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = mal; document.head.appendChild(s); }); }
+
+const DEMO_KEY = 'boda_demo_v1';
+function mesasSemilla() { return Array.from({ length: 12 }, (_, k) => ({ id: k + 1, nombre: 'Mesa ' + (k + 1), capacidad: 10, orden: k + 1 })); }
+function demoSemilla() {
+  const p = (nombre, es_nino, orden) => ({ id: uid(), nombre, es_nino, edad_pendiente: false, orden, asiste: null, dieta: 'ninguna', dieta_detalle: null, mesa_id: null });
+  return {
+    ajustes: { fecha_limite: '2027-02-01', url_invitacion: '' },
+    mesas: mesasSemilla(),
+    grupos: [
+      { id: uid(), nombre: 'Familia Pérez', codigo: 'DEMO01', suplente: false, notas: 'Primos de Nati', fecha_limite: null, mensaje: null, respondido_at: null, creado_at: new Date().toISOString(),
+        integrantes: [p('Juan Pérez', false, 0), p('María Gómez', false, 1), p('Sofía', true, 2), p('Tomás', true, 3)], temas: [] },
+      { id: uid(), nombre: 'Caro y Martín', codigo: 'DEMO02', suplente: false, notas: '', fecha_limite: null, mensaje: null, respondido_at: null, creado_at: new Date().toISOString(),
+        integrantes: [p('Carolina Díaz', false, 0), p('Martín Ruiz', false, 1)], temas: [] }
+    ]
+  };
+}
+let demoMem = null;
+function demoLeer() {
+  const s = leerLocal(DEMO_KEY);
+  if (s) { try { demoMem = JSON.parse(s); } catch (e) {} }
+  if (!demoMem) { demoMem = demoSemilla(); demoGuardar(demoMem); }
+  if (!demoMem.mesas) demoMem.mesas = mesasSemilla();
+  return demoMem;
+}
+function demoGuardar(d) { demoMem = d; guardarLocal(DEMO_KEY, JSON.stringify(d)); }
+function codigoNuevo(existentes) {
+  const a = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let c;
+  do { c = Array.from({ length: 6 }, () => a[Math.floor(Math.random() * a.length)]).join(''); } while (existentes.has(c));
+  return c;
+}
+function demoNuevoGrupo(d, nombre, suplente) {
+  const g = { id: uid(), nombre, codigo: codigoNuevo(new Set(d.grupos.map(x => x.codigo))), suplente: !!suplente, notas: null, fecha_limite: null, mensaje: null, respondido_at: null, temas: [], integrantes: [], creado_at: new Date().toISOString() };
+  d.grupos.push(g); return g;
+}
+
+function chk(r) { if (r.error) throw r.error; return r.data; }
+const filaIntegrante = (i, gid, orden) => ({
+  id: i.id, grupo_id: gid, nombre: i.nombre, es_nino: !!i.es_nino, edad_pendiente: !!i.edad_pendiente, orden,
+  asiste: i.asiste, dieta: i.dieta || 'ninguna', dieta_detalle: i.dieta_detalle || null,
+  mesa_id: i.asiste === false ? null : (i.mesa_id || null)
+});
+
+const store = {
+  async cargar() {
+    if (DEMO) return JSON.parse(JSON.stringify(demoLeer()));
+    const [g, a, m] = await Promise.all([
+      sb.from('boda_grupos').select('*, integrantes:boda_integrantes(*), temas:boda_temas(*)').order('nombre'),
+      sb.from('boda_ajustes').select('*'),
+      sb.from('boda_mesas').select('*').order('orden').order('id')
+    ]);
+    const ajustes = {}; chk(a).forEach(r => { ajustes[r.clave] = r.valor; });
+    return { ajustes, grupos: chk(g), mesas: chk(m) };
+  },
+  // integrantes: los que quedan en el grupo. movidos: [{persona, destino: id de grupo | '__new'}]
+  async guardarGrupo(g, integrantes, eliminados, movidos) {
+    const algunaRespuesta = integrantes.some(i => i.asiste !== null);
+    const respondido_at = g.respondido_at || (algunaRespuesta ? new Date().toISOString() : null);
+    if (DEMO) {
+      const d = demoLeer();
+      let dest = d.grupos.find(x => x.id === g.id) || demoNuevoGrupo(d, g.nombre, g.suplente);
+      Object.assign(dest, { nombre: g.nombre, suplente: !!g.suplente, notas: g.notas || null, fecha_limite: g.fecha_limite || null, respondido_at });
+      dest.integrantes = integrantes.map((i, k) => ({ ...filaIntegrante(i, dest.id, k), id: i.id || uid() }));
+      movidos.forEach(m => {
+        const tg = m.destino === '__new' ? demoNuevoGrupo(d, m.persona.nombre, g.suplente) : d.grupos.find(x => x.id === m.destino);
+        tg.integrantes.push({ ...filaIntegrante(m.persona, tg.id, tg.integrantes.length) });
+      });
+      if (!integrantes.length) d.grupos = d.grupos.filter(x => x !== dest);
+      demoGuardar(d); return;
+    }
+    const fila = { nombre: g.nombre, suplente: !!g.suplente, notas: g.notas || null, fecha_limite: g.fecha_limite || null, respondido_at };
+    let gid = g.id;
+    if (gid) chk(await sb.from('boda_grupos').update(fila).eq('id', gid));
+    else gid = chk(await sb.from('boda_grupos').insert(fila).select('id').single()).id;
+    if (eliminados.length) chk(await sb.from('boda_integrantes').delete().in('id', eliminados));
+    const filas = integrantes.map((i, k) => filaIntegrante(i, gid, k));
+    const existentes = filas.filter(f => f.id);
+    const nuevos = filas.filter(f => !f.id).map(({ id, ...r }) => r);
+    if (existentes.length) chk(await sb.from('boda_integrantes').upsert(existentes));
+    if (nuevos.length) chk(await sb.from('boda_integrantes').insert(nuevos));
+    for (const m of movidos) {
+      let tid = m.destino;
+      if (tid === '__new') tid = chk(await sb.from('boda_grupos').insert({ nombre: m.persona.nombre, suplente: !!g.suplente }).select('id').single()).id;
+      chk(await sb.from('boda_integrantes').upsert(filaIntegrante(m.persona, tid, 100)));
+    }
+    if (!integrantes.length) chk(await sb.from('boda_grupos').delete().eq('id', gid));
+  },
+  async borrarGrupo(id) {
+    if (DEMO) { const d = demoLeer(); d.grupos = d.grupos.filter(g => g.id !== id); demoGuardar(d); return; }
+    chk(await sb.from('boda_grupos').delete().eq('id', id));
+  },
+  async setSuplente(id, valor) {
+    if (DEMO) { const d = demoLeer(); d.grupos.find(g => g.id === id).suplente = valor; demoGuardar(d); return; }
+    chk(await sb.from('boda_grupos').update({ suplente: valor }).eq('id', id));
+  },
+  async setAjuste(clave, valor) {
+    if (DEMO) { const d = demoLeer(); d.ajustes[clave] = valor; demoGuardar(d); return; }
+    chk(await sb.from('boda_ajustes').upsert({ clave, valor }));
+  },
+  async borrarTema(id) {
+    if (DEMO) { const d = demoLeer(); d.grupos.forEach(g => { g.temas = g.temas.filter(t => t.id !== id); }); demoGuardar(d); return; }
+    chk(await sb.from('boda_temas').delete().eq('id', id));
+  },
+  async asignarMesa(ids, mesaId) {
+    if (DEMO) { const d = demoLeer(); d.grupos.forEach(g => g.integrantes.forEach(i => { if (ids.includes(i.id)) i.mesa_id = mesaId; })); demoGuardar(d); return; }
+    chk(await sb.from('boda_integrantes').update({ mesa_id: mesaId }).in('id', ids));
+  },
+  async crearMesa(nombre, orden) {
+    if (DEMO) { const d = demoLeer(); const id = d.mesas.reduce((m, x) => Math.max(m, x.id), 0) + 1; d.mesas.push({ id, nombre, capacidad: 10, orden }); demoGuardar(d); return; }
+    chk(await sb.from('boda_mesas').insert({ nombre, capacidad: 10, orden }));
+  },
+  async guardarMesa(id, cambios) {
+    if (DEMO) { const d = demoLeer(); Object.assign(d.mesas.find(m => m.id === id), cambios); demoGuardar(d); return; }
+    chk(await sb.from('boda_mesas').update(cambios).eq('id', id));
+  },
+  async borrarMesa(id) {
+    if (DEMO) { const d = demoLeer(); d.mesas = d.mesas.filter(m => m.id !== id); d.grupos.forEach(g => g.integrantes.forEach(i => { if (i.mesa_id === id) i.mesa_id = null; })); demoGuardar(d); return; }
+    chk(await sb.from('boda_mesas').delete().eq('id', id));
+  }
+};
+
+/* ---------------- Estado + cálculos ---------------- */
+let datos = { ajustes: {}, grupos: [], mesas: [] };
+let tab = 'resumen';
+let filtro = 'todos';
+let busqueda = '';
+
+function urlInvitacion() {
+  const u = (datos.ajustes.url_invitacion || '').trim();
+  if (u) return u.replace(/index\.html$/, '').replace(/\/?$/, '/');
+  return new URL('./', location.href).href;
+}
+const linkGrupo = (g) => urlInvitacion() + '?c=' + g.codigo;
+function mensajeWa(g) {
+  return `¡Hola ${g.nombre}! 💛\nNati y Dani nos casamos el domingo 11 de abril de 2027 y queremos que estés.\n\nEntrá a la invitación para ver todos los detalles y confirmar tu asistencia:\n${linkGrupo(g)}\n\nTu código es: ${g.codigo}`;
+}
+const titulares = () => datos.grupos.filter(g => !g.suplente);
+const nombreMesa = (id) => { const m = datos.mesas.find(x => x.id === id); return m ? m.nombre : ''; };
+function estadoGrupo(g) {
+  const ints = g.integrantes || [];
+  if (!g.respondido_at && ints.every(i => i.asiste === null)) return 'pendiente';
+  if (ints.some(i => i.asiste === true)) return 'confirmado';
+  return 'novan';
+}
+function totales() {
+  const t = { grupos: 0, respondieron: 0, vienen: 0, pagan: 0, menores: 0, edadPend: 0, sinMesa: 0, si: 0, siMenores: 0, no: 0, pend: 0, dietas: {}, suplentes: 0 };
+  datos.grupos.forEach(g => {
+    if (g.suplente) { t.suplentes += (g.integrantes || []).length; return; }
+    t.grupos++;
+    if (estadoGrupo(g) !== 'pendiente') t.respondieron++;
+    (g.integrantes || []).forEach(i => {
+      if (i.asiste === false) { t.no++; return; }
+      t.vienen++;
+      if (i.es_nino) t.menores++; else t.pagan++;
+      if (i.edad_pendiente) t.edadPend++;
+      if (!i.mesa_id) t.sinMesa++;
+      if (i.asiste === true) {
+        t.si++; if (i.es_nino) t.siMenores++;
+        if (i.dieta && i.dieta !== 'ninguna') t.dietas[i.dieta] = (t.dietas[i.dieta] || 0) + 1;
+      } else t.pend++;
+    });
+  });
+  return t;
+}
+const stat = (k, v, s, cls) => `<div class="stat ${cls || ''}"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s || '&nbsp;'}</div></div>`;
+
+/* ---------------- Render ---------------- */
+function render() {
+  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+  const v = $('vista');
+  ({ resumen: vResumen, invitados: (x) => vGrupos(x, false), suplentes: (x) => vGrupos(x, true), mesas: vMesas, comida: vComida, musica: vMusica, ajustes: vAjustes })[tab](v);
+}
+
+function vResumen(v) {
+  const t = totales();
+  const tot = t.vienen + t.no;
+  const pct = (n) => tot ? (n / tot * 100).toFixed(1) + '%' : '0';
+  const ultimas = titulares().filter(g => g.respondido_at).sort((a, b) => b.respondido_at.localeCompare(a.respondido_at)).slice(0, 6);
+  v.innerHTML = `
+    <div class="grid-stats">
+      ${stat('Invitados', t.vienen, `${t.pagan} pagan · ${t.menores} menores`)}
+      ${stat('Confirmados', t.si, `${t.si - t.siMenores} adultos · ${t.siMenores} menores`, 'si')}
+      ${stat('A confirmar', t.pend, 'personas')}
+      ${stat('No vienen', t.no, '', 'no')}
+      ${stat('Sin mesa', t.sinMesa, '<a href="#" data-ir="mesas">armar mesas</a>', t.sinMesa ? 'alerta' : '')}
+      ${stat('Suplentes', t.suplentes, '<a href="#" data-ir="suplentes">ver</a>')}
+    </div>
+    ${t.edadPend ? `<p class="chiquito muted" style="margin:10px 2px 0">Hay ${t.edadPend} ${t.edadPend === 1 ? 'persona' : 'personas'} con la edad a confirmar.</p>` : ''}
+    <div class="tarjeta">
+      <div class="fila-flex"><h2>Respuestas</h2><span class="esp"></span><span class="muted">${t.respondieron} de ${t.grupos} grupos</span></div>
+      <div class="barra" aria-hidden="true"><i style="width:${pct(t.si)};background:var(--salvia)"></i><i style="width:${pct(t.no)};background:var(--rosa)"></i></div>
+      <p class="chiquito muted" style="margin:8px 0 0">Plazo para confirmar: <b>${esc(fechaLarga(datos.ajustes.fecha_limite))}</b> · <a href="#" data-ir="ajustes">cambiar</a></p>
+    </div>
+    <div class="tarjeta">
+      <h2>Para el salón</h2>
+      <p style="margin:0">${t.si - t.siMenores} adultos y ${t.siMenores} menores confirmados</p>
+      <p class="muted chiquito" style="margin:6px 0 0">${Object.keys(t.dietas).length
+        ? Object.entries(t.dietas).map(([d, n]) => `${esc(DIETAS[d])}: <b>${n}</b>`).join(' · ') + ` · <a href="#" data-ir="comida">ver detalle</a>`
+        : 'Sin restricciones alimentarias informadas por ahora.'}</p>
+    </div>
+    <div class="tarjeta">
+      <h2>Últimas respuestas</h2>
+      ${ultimas.length ? `<table class="t"><tbody>${ultimas.map(g => {
+        const n = g.integrantes.filter(i => i.asiste).length;
+        return `<tr><td>${esc(g.nombre)}</td><td>${n ? `<span class="pill ok">${n} van</span>` : '<span class="pill pend">No van</span>'}</td><td class="muted chiquito" style="text-align:right">${fechaCorta(g.respondido_at)}</td></tr>`;
+      }).join('')}</tbody></table>` : '<div class="vacio">Todavía nadie respondió.</div>'}
+    </div>`;
+}
+
+function vGrupos(v, sup) {
+  const q = busqueda.toLowerCase();
+  const base = datos.grupos.filter(g => !!g.suplente === sup);
+  const lista = base
+    .filter(g => sup || filtro === 'todos' || estadoGrupo(g) === filtro)
+    .filter(g => !q || g.nombre.toLowerCase().includes(q) || g.codigo.toLowerCase().includes(q) || (g.integrantes || []).some(i => i.nombre.toLowerCase().includes(q)))
+    .sort(porNombre);
+  const cuenta = (f) => base.filter(g => f === 'todos' || estadoGrupo(g) === f).length;
+  const personas = base.reduce((n, g) => n + (g.integrantes || []).length, 0);
+  v.innerHTML = `
+    ${sup ? '<p class="leyenda">Gente para invitar si alguien no viene. No suman en los totales y su código <b>no abre</b> la invitación hasta que los pases a invitados.</p>'
+          : `<p class="leyenda">${base.length} grupos · ${personas} personas. Tocá <b>Editar</b> para cambiar nombres, edad, mesa o pasar a alguien a otro grupo.</p>`}
+    <div class="herr">
+      <input class="campo" id="buscar" placeholder="Buscar grupo, persona o código" value="${esc(busqueda)}">
+      <button class="btn" id="btnNuevo">${sup ? '+ Nuevo suplente' : '+ Nuevo grupo'}</button>
+    </div>
+    ${sup ? '' : `<div class="filtros">
+      ${[['todos', 'Todos'], ['confirmado', 'Confirmados'], ['pendiente', 'Pendientes'], ['novan', 'No van']].map(([k, t]) =>
+        `<button data-filtro="${k}" aria-pressed="${filtro === k}">${t} (${cuenta(k)})</button>`).join('')}
+    </div>`}
+    <div id="lista">
+      ${lista.length ? lista.map(grupoHtml).join('') : `<div class="vacio">${base.length ? 'No hay grupos con ese filtro.' : sup ? 'Todavía no hay suplentes.' : 'Todavía no cargaste invitados. Tocá “+ Nuevo grupo”.'}</div>`}
+    </div>`;
+  $('buscar').addEventListener('input', (e) => { busqueda = e.target.value; const pos = e.target.selectionStart; render(); const nb = $('buscar'); nb.focus(); nb.setSelectionRange(pos, pos); });
+  $('btnNuevo').onclick = () => abrirEditor(null, sup);
+}
+
+function grupoHtml(g) {
+  const st = estadoGrupo(g);
+  const ints = [...(g.integrantes || [])].sort((a, b) => a.orden - b.orden);
+  const lim = g.fecha_limite ? ` · plazo propio: ${esc(fechaLarga(g.fecha_limite))}` : '';
+  const estado = g.suplente ? '<span class="pill gris">Suplente</span>'
+    : st === 'pendiente' ? '<span class="pill pend">Pendiente</span>' : `<span class="pill ok">Respondió ${fechaCorta(g.respondido_at)}</span>`;
+  return `
+    <div class="grupo ${g.suplente ? 'sup' : ''}" data-id="${esc(g.id)}">
+      <div class="grupo-cab">
+        <div style="flex:1;min-width:0">
+          <h3>${esc(g.nombre)}</h3>
+          <div class="chiquito muted">${estado}${lim}</div>
+        </div>
+        <span class="codigo">${esc(g.codigo)}</span>
+      </div>
+      <ul class="integrantes">
+        ${ints.map(i => `<li>
+          <span class="ico ${i.asiste === true ? 'si' : i.asiste === false ? 'no' : 'pend'}">${i.asiste === true ? '✓' : i.asiste === false ? '✕' : '·'}</span>
+          <span>${esc(i.nombre)}</span>
+          ${i.es_nino ? '<span class="pill menor">Menor</span>' : ''}
+          ${i.edad_pendiente ? '<span class="pill edad">¿Edad?</span>' : ''}
+          ${i.asiste && i.dieta !== 'ninguna' ? `<span class="dieta-tag">${esc(dietaTexto(i.dieta, i.dieta_detalle))}</span>` : ''}
+          ${i.mesa_id && i.asiste !== false ? `<span class="pill mesa">${esc(nombreMesa(i.mesa_id))}</span>` : ''}
+        </li>`).join('')}
+      </ul>
+      ${g.mensaje ? `<p class="mensaje">“${esc(g.mensaje)}”</p>` : ''}
+      ${g.notas ? `<div class="notas">📝 ${esc(g.notas)}</div>` : ''}
+      <div class="grupo-acc">
+        ${g.suplente
+          ? '<button class="btn chico" data-acc="ainvitados">Pasar a invitados</button>'
+          : `<a class="btn wa chico" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(mensajeWa(g))}">WhatsApp</a>
+             <button class="btn suave chico" data-acc="copiar">Copiar mensaje</button>`}
+        <button class="btn suave chico" data-acc="editar">Editar</button>
+        <button class="btn peligro chico" data-acc="borrar">Borrar</button>
+      </div>
+    </div>`;
+}
+
+function opcionesMesa(sel, conVacio = 'Sin mesa') {
+  return `<option value="">${conVacio}</option>` + datos.mesas.map(m => `<option value="${m.id}" ${sel === m.id ? 'selected' : ''}>${esc(m.nombre)}</option>`).join('');
+}
+
+function vMesas(v) {
+  const enSalon = [];
+  datos.grupos.forEach(g => (g.integrantes || []).forEach(i => { if (i.asiste !== false) enSalon.push({ i, g }); }));
+  const sinMesa = enSalon.filter(x => !x.g.suplente && !x.i.mesa_id);
+  const ubicados = enSalon.filter(x => x.i.mesa_id).length;
+  // sin mesa, agrupados por grupo
+  const porGrupo = new Map();
+  sinMesa.forEach(x => { if (!porGrupo.has(x.g.id)) porGrupo.set(x.g.id, { g: x.g, ps: [] }); porGrupo.get(x.g.id).ps.push(x.i); });
+  const sinHtml = [...porGrupo.values()].sort((a, b) => porNombre(a.g, b.g)).map(({ g, ps }) => ps.length > 1 ? `
+    <div class="sin-grupo">
+      <div class="cab"><b>${esc(g.nombre)}</b>
+        <select data-mesa-grupo="${esc(g.id)}" aria-label="Mesa para ${esc(g.nombre)}">${opcionesMesa(null, 'Todo el grupo a…')}</select></div>
+      <ul>${ps.map(i => liMesa(i, g, true)).join('')}</ul>
+    </div>` : `<div class="sin-grupo"><ul>${liMesa(ps[0], g, ps[0].nombre === g.nombre)}</ul></div>`).join('');
+  v.innerHTML = `
+    <p class="leyenda">${datos.mesas.length} mesas · ${ubicados} personas ubicadas · ${sinMesa.length} sin mesa. Los que marcaste como “No va” salen de las mesas solos. Tocá el nombre de una mesa para cambiarlo.</p>
+    <div class="herr">
+      <button class="btn" id="mesaMas">+ Mesa</button>
+      ${datos.mesas.length ? '<button class="btn suave" id="mesaMenos">− Última mesa</button>' : ''}
+      <span class="esp"></span>
+      <button class="btn suave" id="expMesas">Exportar mesas (CSV)</button>
+    </div>
+    <div class="mesas">
+      ${sinMesa.length ? `<div class="mesa sin"><div class="mesa-cab"><h3>Sin mesa</h3><span class="cap">${sinMesa.length}</span></div>${sinHtml}</div>` : ''}
+      ${datos.mesas.map(m => {
+        const en = enSalon.filter(x => x.i.mesa_id === m.id).sort((a, b) => porNombre(a.g, b.g) || a.i.orden - b.i.orden);
+        const llena = en.length > m.capacidad;
+        return `<div class="mesa ${llena ? 'llena' : ''}">
+          <div class="mesa-cab">
+            <input class="nom" data-mesa-nombre="${m.id}" value="${esc(m.nombre)}" maxlength="40" aria-label="Nombre de la mesa">
+            <span class="cap">${en.length} / <input data-mesa-cap="${m.id}" inputmode="numeric" value="${m.capacidad}" aria-label="Lugares"></span>
+          </div>
+          ${en.length ? `<ul>${en.map(x => liMesa(x.i, x.g, false)).join('')}</ul>` : '<p class="vacia">Vacía</p>'}
+        </div>`;
+      }).join('')}
+    </div>`;
+  $('mesaMas').onclick = async () => {
+    const n = datos.mesas.reduce((mx, m) => Math.max(mx, m.orden || 0), 0) + 1;
+    try { await store.crearMesa('Mesa ' + (datos.mesas.length + 1), n); await recargar(); toast('Mesa agregada'); } catch (e) { errorGen(e); }
+  };
+  if ($('mesaMenos')) $('mesaMenos').onclick = async () => {
+    const m = datos.mesas[datos.mesas.length - 1];
+    const n = enSalon.filter(x => x.i.mesa_id === m.id).length;
+    if (!confirm(`¿Quitar "${m.nombre}"?${n ? ` Las ${n} personas sentadas ahí quedan sin mesa.` : ''}`)) return;
+    try { await store.borrarMesa(m.id); await recargar(); toast('Mesa quitada'); } catch (e) { errorGen(e); }
+  };
+  $('expMesas').onclick = exportarMesas;
+}
+function liMesa(i, g, enSinMesa) {
+  return `<li><span class="nm">${esc(i.nombre)} ${i.es_nino ? '<span class="pill menor">Menor</span>' : ''}${g.suplente ? ' <span class="pill gris">Suplente</span>' : i.asiste === true ? ' <span style="color:var(--salvia-osc)">✓</span>' : ''}
+    ${enSinMesa ? '' : `<span class="gr">${esc(g.nombre)}</span>`}</span>
+    <select data-mesa-persona="${esc(i.id)}" aria-label="Mesa de ${esc(i.nombre)}">${opcionesMesa(i.mesa_id || null)}</select></li>`;
+}
+
+function vComida(v) {
+  const t = totales();
+  const filas = [];
+  titulares().forEach(g => (g.integrantes || []).forEach(i => { if (i.asiste && i.dieta !== 'ninguna') filas.push({ g, i }); }));
+  filas.sort((a, b) => a.i.dieta.localeCompare(b.i.dieta) || a.i.nombre.localeCompare(b.i.nombre, 'es'));
+  v.innerHTML = `
+    <div class="grid-stats">
+      ${stat('Adultos', t.si - t.siMenores, 'confirmados')}
+      ${stat('Menores', t.siMenores, 'confirmados')}
+      ${['vegetariano', 'vegano', 'celiaco', 'otro'].map(d => stat(DIETAS[d], t.dietas[d] || 0)).join('')}
+    </div>
+    <div class="tarjeta">
+      <div class="fila-flex"><h2>Restricciones</h2><span class="esp"></span><button class="btn suave chico" id="expInv">Exportar todo (CSV)</button></div>
+      ${filas.length ? `<table class="t"><thead><tr><th>Nombre</th><th>Restricción</th><th class="ocultar-movil">Grupo</th><th class="ocultar-movil">Mesa</th></tr></thead><tbody>
+        ${filas.map(({ g, i }) => `<tr><td>${esc(i.nombre)}${i.es_nino ? ' <span class="pill menor">Menor</span>' : ''}</td><td>${esc(dietaTexto(i.dieta, i.dieta_detalle))}</td><td class="ocultar-movil muted">${esc(g.nombre)}</td><td class="ocultar-movil muted">${esc(nombreMesa(i.mesa_id))}</td></tr>`).join('')}
+      </tbody></table>` : '<div class="vacio">Nadie informó restricciones todavía.</div>'}
+    </div>`;
+  $('expInv').onclick = exportarInvitados;
+}
+
+function vMusica(v) {
+  const temas = [];
+  datos.grupos.forEach(g => (g.temas || []).forEach(t => temas.push({ ...t, grupo: g.nombre })));
+  temas.sort((a, b) => (a.creado_at || '').localeCompare(b.creado_at || ''));
+  v.innerHTML = `
+    <div class="tarjeta" style="margin-top:0">
+      <div class="fila-flex"><h2>Temas pedidos</h2><span class="muted">${temas.length}</span><span class="esp"></span>
+        ${temas.length ? '<button class="btn suave chico" id="copiarTemas">Copiar lista</button><button class="btn suave chico" id="expTemas">CSV</button>' : ''}</div>
+      ${temas.length ? `<table class="t"><thead><tr><th>Tema</th><th>Artista</th><th class="ocultar-movil">Pedido por</th><th></th></tr></thead><tbody>
+        ${temas.map(t => `<tr>
+          <td>${esc(t.titulo)}${t.link ? ` · <a href="${esc(t.link)}" target="_blank" rel="noopener nofollow">link</a>` : ''}</td>
+          <td>${esc(t.artista || '')}</td>
+          <td class="ocultar-movil muted">${esc(t.grupo)}</td>
+          <td style="text-align:right"><button class="x" data-tema="${esc(t.id)}" aria-label="Borrar tema">×</button></td></tr>`).join('')}
+      </tbody></table>` : '<div class="vacio">Todavía no pidieron temas.</div>'}
+    </div>`;
+  if (temas.length) {
+    $('copiarTemas').onclick = async () => {
+      const txt = temas.map(t => `${t.titulo}${t.artista ? ' – ' + t.artista : ''}${t.link ? ' (' + t.link + ')' : ''}`).join('\n');
+      try { await navigator.clipboard.writeText(txt); toast('Lista copiada'); } catch (e) { toast('No se pudo copiar'); }
+    };
+    $('expTemas').onclick = () => descargarCsv('temas-boda.csv', [['Tema', 'Artista', 'Link', 'Pedido por'], ...temas.map(t => [t.titulo, t.artista || '', t.link || '', t.grupo])]);
+  }
+}
+
+function vAjustes(v) {
+  v.innerHTML = `
+    <div class="tarjeta" style="margin-top:0">
+      <h2>Plazo para confirmar</h2>
+      <p class="muted chiquito" style="margin:0 0 8px">Después de esta fecha la invitación deja de aceptar respuestas. A un grupo puntual le podés dar un plazo propio desde “Editar”.</p>
+      <div class="fila-flex">
+        <input class="campo" type="date" id="fechaLim" value="${esc(datos.ajustes.fecha_limite || '')}" style="max-width:200px">
+        <button class="btn" id="guardarFecha">Guardar</button>
+        <button class="btn suave chico" data-fecha="2027-02-01">1 de febrero</button>
+        <button class="btn suave chico" data-fecha="2027-03-01">1 de marzo</button>
+      </div>
+    </div>
+    <div class="tarjeta">
+      <h2>Link de la invitación</h2>
+      <p class="muted chiquito" style="margin:0 0 8px">Con esto se arman los links de cada grupo. Si lo dejás vacío se usa la misma dirección donde está este panel.</p>
+      <div class="fila-flex">
+        <input class="campo" id="urlInv" placeholder="https://usuario.github.io/boda/" value="${esc(datos.ajustes.url_invitacion || '')}" style="flex:1;min-width:220px">
+        <button class="btn" id="guardarUrl">Guardar</button>
+      </div>
+      <p class="chiquito muted" style="margin:8px 0 0">Ahora: <a href="${esc(urlInvitacion())}" target="_blank" rel="noopener">${esc(urlInvitacion())}</a></p>
+    </div>
+    <div class="tarjeta">
+      <h2>Exportar</h2>
+      <p class="muted chiquito" style="margin:0 0 8px">Archivos CSV que abren directo en Excel.</p>
+      <div class="fila-flex"><button class="btn suave" id="expInv2">Invitados (CSV)</button><button class="btn suave" id="expMesas2">Mesas (CSV)</button></div>
+    </div>
+    ${DEMO ? `<div class="tarjeta"><h2>Demo</h2><p class="muted chiquito" style="margin:0 0 8px">Vuelve los datos de prueba a cero.</p><button class="btn peligro" id="resetDemo">Reiniciar demo</button></div>` : ''}`;
+  const guardarFecha = async (f) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(f)) { toast('Elegí una fecha'); return; }
+    try { await store.setAjuste('fecha_limite', f); datos.ajustes.fecha_limite = f; toast('Plazo: ' + fechaLarga(f)); render(); } catch (e) { errorGen(e); }
+  };
+  $('guardarFecha').onclick = () => guardarFecha($('fechaLim').value);
+  v.querySelectorAll('[data-fecha]').forEach(b => b.onclick = () => guardarFecha(b.dataset.fecha));
+  $('guardarUrl').onclick = async () => {
+    const u = $('urlInv').value.trim();
+    if (u && !/^https?:\/\//i.test(u)) { toast('Tiene que empezar con https://'); return; }
+    try { await store.setAjuste('url_invitacion', u); datos.ajustes.url_invitacion = u; toast('Guardado'); render(); } catch (e) { errorGen(e); }
+  };
+  $('expInv2').onclick = exportarInvitados;
+  $('expMesas2').onclick = exportarMesas;
+  if ($('resetDemo')) $('resetDemo').onclick = () => { if (confirm('¿Reiniciar los datos de prueba?')) { demoGuardar(demoSemilla()); recargar(); } };
+}
+
+/* ---------------- Editor de grupo ---------------- */
+let ed = null;
+const EDADES = { adulto: 'Adulto', menor: 'Menor', pend: '¿Edad?' };
+const edadDe = (p) => p.es_nino ? 'menor' : p.edad_pendiente ? 'pend' : 'adulto';
+function abrirEditor(g, sup) {
+  ed = g ? {
+    id: g.id, nombre: g.nombre, suplente: !!g.suplente, notas: g.notas || '', fecha_limite: g.fecha_limite || '', respondido_at: g.respondido_at,
+    integrantes: [...g.integrantes].sort((a, b) => a.orden - b.orden).map(i => ({ ...i, mover: '' })), eliminados: []
+  } : { id: null, nombre: '', suplente: !!sup, notas: '', fecha_limite: '', respondido_at: null, integrantes: sup ? [nuevaPersona()] : [nuevaPersona(), nuevaPersona()], eliminados: [] };
+  renderEditor();
+  $('editor').classList.remove('oculto');
+  setTimeout(() => $('edNombre') && $('edNombre').focus(), 50);
+}
+const nuevaPersona = () => ({ id: null, nombre: '', es_nino: false, edad_pendiente: false, asiste: null, dieta: 'ninguna', dieta_detalle: '', mesa_id: null, mover: '' });
+function cerrarEditor() { $('editor').classList.add('oculto'); ed = null; }
+
+function opcionesMover(sel) {
+  const otros = datos.grupos.filter(x => x.id !== ed.id).sort(porNombre);
+  const inv = otros.filter(x => !x.suplente), sup = otros.filter(x => x.suplente);
+  const op = (x) => `<option value="${esc(x.id)}" ${sel === x.id ? 'selected' : ''}>${esc(x.nombre)}</option>`;
+  return `<option value="">Queda en este grupo</option><option value="__new" ${sel === '__new' ? 'selected' : ''}>→ Grupo nuevo (con su nombre)</option>`
+    + (inv.length ? `<optgroup label="Mover a un grupo de invitados">${inv.map(op).join('')}</optgroup>` : '')
+    + (sup.length ? `<optgroup label="Mover a un grupo de suplentes">${sup.map(op).join('')}</optgroup>` : '');
+}
+function destinoTexto(d) { return d === '__new' ? 'un grupo nuevo' : '“' + ((datos.grupos.find(x => x.id === d) || {}).nombre || '') + '”'; }
+
+function renderEditor() {
+  const el = $('editor');
+  el.innerHTML = `
+    <div class="hoja" role="dialog" aria-modal="true" aria-labelledby="edTit">
+      <div class="fila-flex"><h2 id="edTit">${ed.id ? 'Editar grupo' : ed.suplente ? 'Nuevo suplente' : 'Nuevo grupo'}</h2><span class="esp"></span><button class="x" id="edCerrar" aria-label="Cerrar">×</button></div>
+      <label class="lbl" for="edNombre">Nombre del grupo (así los saluda la invitación)</label>
+      <input class="campo" id="edNombre" maxlength="80" placeholder="Ej.: Familia Pérez, Caro y Martín, Tía Marta" value="${esc(ed.nombre)}">
+      <label class="check"><input type="checkbox" id="edSuplente" ${ed.suplente ? 'checked' : ''}> Suplente: todavía no está invitado y su código no abre la invitación</label>
+      <label class="lbl">Integrantes</label>
+      ${ed.integrantes.length > 1 ? `<div class="para-todos">
+        <select class="campo" id="edTodosAsiste" aria-label="Asistencia de todo el grupo"><option value="">Asistencia de todos…</option><option value="si">Todos van</option><option value="pend">Todos a confirmar</option><option value="no">Ninguno va</option></select>
+        <select class="campo" id="edTodosMesa" aria-label="Mesa de todo el grupo"><option value="x">Mesa de todos…</option>${opcionesMesa(null)}</select>
+      </div>` : ''}
+      <div id="edPersonas">
+        ${ed.integrantes.map((p, k) => `
+          <div class="persona-ed ${p.mover ? 'mueve' : ''}" data-k="${k}">
+            <div class="l1">
+              <input class="campo" data-f="nombre" placeholder="Nombre y apellido" maxlength="80" value="${esc(p.nombre)}">
+              <button class="x" data-quitar="${k}" aria-label="Quitar persona">×</button>
+            </div>
+            <div class="l2">
+              <select class="campo" data-f="edad" aria-label="Edad">${Object.entries(EDADES).map(([v, t]) => `<option value="${v}" ${edadDe(p) === v ? 'selected' : ''}>${t}</option>`).join('')}</select>
+              <select class="campo" data-f="asiste" aria-label="Asistencia">
+                <option value="" ${p.asiste === null ? 'selected' : ''}>A confirmar</option>
+                <option value="si" ${p.asiste === true ? 'selected' : ''}>Va</option>
+                <option value="no" ${p.asiste === false ? 'selected' : ''}>No va</option>
+              </select>
+              <select class="campo" data-f="dieta" aria-label="Restricción alimentaria">
+                ${Object.entries(DIETAS).map(([k2, t]) => `<option value="${k2}" ${p.dieta === k2 ? 'selected' : ''}>${t}</option>`).join('')}
+              </select>
+              <select class="campo" data-f="mesa" aria-label="Mesa" ${p.asiste === false ? 'disabled' : ''}>${opcionesMesa(p.mesa_id || null)}</select>
+            </div>
+            ${p.dieta === 'otro' ? `<input class="campo" style="margin-top:8px" data-f="dieta_detalle" placeholder="¿Cuál?" maxlength="300" value="${esc(p.dieta_detalle || '')}">` : ''}
+            ${p.id && ed.id ? `<select class="campo" style="margin-top:8px" data-f="mover" aria-label="Pasar a otro grupo">${opcionesMover(p.mover)}</select>` : ''}
+            ${p.mover ? `<div class="aviso-mueve">Al guardar pasa a ${esc(destinoTexto(p.mover))}.</div>` : ''}
+          </div>`).join('')}
+      </div>
+      <button class="btn suave chico" id="edAgregar">+ Agregar persona</button>
+      <label class="lbl" for="edNotas">Notas (solo las ven ustedes)</label>
+      <input class="campo" id="edNotas" maxlength="300" placeholder="Ej.: amigos del trabajo de Dani" value="${esc(ed.notas)}">
+      <label class="lbl" for="edFecha">Plazo propio para confirmar (opcional, útil para reemplazos)</label>
+      <input class="campo" type="date" id="edFecha" value="${esc(ed.fecha_limite)}" style="max-width:220px">
+      <p class="err" id="edErr" role="alert"></p>
+      <div class="pie-hoja">
+        <button class="btn suave" id="edCancelar">Cancelar</button>
+        <button class="btn" id="edGuardar">Guardar</button>
+      </div>
+    </div>`;
+}
+
+$('editor').addEventListener('click', (e) => {
+  if (e.target.id === 'editor' || e.target.id === 'edCerrar' || e.target.id === 'edCancelar') { cerrarEditor(); return; }
+  if (e.target.id === 'edAgregar') { leerEditor(); ed.integrantes.push(nuevaPersona()); renderEditor(); const ins = document.querySelectorAll('#edPersonas [data-f="nombre"]'); ins[ins.length - 1].focus(); return; }
+  const q = e.target.closest('[data-quitar]');
+  if (q) { leerEditor(); const [p] = ed.integrantes.splice(+q.dataset.quitar, 1); if (p.id) ed.eliminados.push(p.id); renderEditor(); return; }
+  if (e.target.id === 'edGuardar') guardarEditor();
+});
+$('editor').addEventListener('change', (e) => {
+  const f = e.target.dataset.f;
+  if (f === 'dieta' || f === 'asiste' || f === 'mover') { leerEditor(); renderEditor(); return; }
+  if (e.target.id === 'edTodosAsiste' && e.target.value) {
+    leerEditor(); const v = e.target.value;
+    ed.integrantes.forEach(p => { if (p.mover) return; p.asiste = v === 'si' ? true : v === 'no' ? false : null; if (p.asiste === false) p.mesa_id = null; });
+    renderEditor(); return;
+  }
+  if (e.target.id === 'edTodosMesa' && e.target.value !== 'x') {
+    leerEditor(); const v = e.target.value ? +e.target.value : null;
+    ed.integrantes.forEach(p => { if (!p.mover && p.asiste !== false) p.mesa_id = v; });
+    renderEditor();
+  }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && ed) cerrarEditor(); });
+
+function leerEditor() {
+  ed.nombre = $('edNombre').value; ed.notas = $('edNotas').value; ed.fecha_limite = $('edFecha').value; ed.suplente = $('edSuplente').checked;
+  document.querySelectorAll('#edPersonas .persona-ed').forEach(div => {
+    const p = ed.integrantes[+div.dataset.k];
+    const val = (f) => { const x = div.querySelector(`[data-f="${f}"]`); return x ? x.value : null; };
+    p.nombre = val('nombre');
+    const edad = val('edad'); p.es_nino = edad === 'menor'; p.edad_pendiente = edad === 'pend';
+    const a = val('asiste'); p.asiste = a === '' ? null : a === 'si';
+    p.dieta = val('dieta');
+    const det = val('dieta_detalle'); p.dieta_detalle = det == null ? '' : det;
+    const m = val('mesa'); p.mesa_id = p.asiste === false ? null : (m ? +m : null);
+    const mv = val('mover'); p.mover = mv || '';
+  });
+}
+
+async function guardarEditor() {
+  leerEditor();
+  const nombre = ed.nombre.trim();
+  const conNombre = ed.integrantes.filter(p => p.nombre.trim());
+  ed.integrantes.filter(p => !p.nombre.trim() && p.id).forEach(p => ed.eliminados.push(p.id));
+  const quedan = conNombre.filter(p => !p.mover), movidos = conNombre.filter(p => p.mover);
+  if (!nombre) { $('edErr').textContent = 'Poné un nombre para el grupo.'; return; }
+  if (!conNombre.length) { $('edErr').textContent = 'Agregá al menos una persona.'; return; }
+  if (!quedan.length && !confirm('Pasás a todos a otros grupos, así que este grupo queda vacío y se borra (su código deja de funcionar). ¿Seguimos?')) return;
+  const limpiar = (p) => ({ id: p.id, nombre: p.nombre.trim(), es_nino: p.es_nino, edad_pendiente: p.edad_pendiente, asiste: p.asiste, dieta: p.dieta, dieta_detalle: p.dieta === 'otro' ? (p.dieta_detalle || '').trim() : null, mesa_id: p.mesa_id });
+  const btn = $('edGuardar'); btn.disabled = true; btn.textContent = 'Guardando…';
+  try {
+    await store.guardarGrupo(
+      { id: ed.id, nombre, suplente: ed.suplente, notas: ed.notas.trim(), fecha_limite: ed.fecha_limite || null, respondido_at: ed.respondido_at },
+      quedan.map(limpiar), ed.eliminados, movidos.map(p => ({ persona: limpiar(p), destino: p.mover }))
+    );
+    const msg = !ed.id ? (ed.suplente ? 'Suplente agregado' : 'Grupo creado') : movidos.length ? `Guardado · ${movidos.length === 1 ? 'una persona cambió' : movidos.length + ' personas cambiaron'} de grupo` : 'Cambios guardados';
+    cerrarEditor(); await recargar(); toast(msg);
+  } catch (e) {
+    $('edErr').textContent = 'No se pudo guardar: ' + (e.message || e);
+    btn.disabled = false; btn.textContent = 'Guardar';
+  }
+}
+
+/* ---------------- Acciones en la vista ---------------- */
+$('vista').addEventListener('click', async (e) => {
+  const ir = e.target.closest('[data-ir]');
+  if (ir) { e.preventDefault(); tab = ir.dataset.ir; render(); window.scrollTo(0, 0); return; }
+  const f = e.target.closest('[data-filtro]');
+  if (f) { filtro = f.dataset.filtro; render(); return; }
+  const tm = e.target.closest('[data-tema]');
+  if (tm) {
+    if (!confirm('¿Borrar este tema?')) return;
+    try { await store.borrarTema(tm.dataset.tema); await recargar(); toast('Tema borrado'); } catch (err) { errorGen(err); }
+    return;
+  }
+  const acc = e.target.closest('[data-acc]');
+  if (!acc) return;
+  const g = datos.grupos.find(x => x.id === acc.closest('.grupo').dataset.id);
+  if (acc.dataset.acc === 'copiar') {
+    try { await navigator.clipboard.writeText(mensajeWa(g)); toast('Mensaje con link copiado'); } catch (err) { prompt('Copiá el link:', linkGrupo(g)); }
+  }
+  if (acc.dataset.acc === 'editar') abrirEditor(g);
+  if (acc.dataset.acc === 'ainvitados') {
+    try { await store.setSuplente(g.id, false); await recargar(); toast(`${g.nombre} pasó a invitados`); } catch (err) { errorGen(err); }
+  }
+  if (acc.dataset.acc === 'borrar') {
+    if (!confirm(`¿Borrar "${g.nombre}" y todas sus respuestas? El código deja de funcionar.`)) return;
+    try { await store.borrarGrupo(g.id); await recargar(); toast('Grupo borrado'); } catch (err) { errorGen(err); }
+  }
+});
+
+$('vista').addEventListener('change', async (e) => {
+  const t = e.target;
+  try {
+    if (t.dataset.mesaPersona) {
+      const v = t.value ? +t.value : null;
+      await store.asignarMesa([t.dataset.mesaPersona], v);
+      await recargar(); toast(v ? 'Ubicado en ' + nombreMesa(v) : 'Quedó sin mesa');
+    } else if (t.dataset.mesaGrupo) {
+      if (!t.value) return;
+      const v = +t.value, g = datos.grupos.find(x => x.id === t.dataset.mesaGrupo);
+      const ids = g.integrantes.filter(i => i.asiste !== false).map(i => i.id);
+      await store.asignarMesa(ids, v);
+      await recargar(); toast(`${g.nombre} → ${nombreMesa(v)}`);
+    } else if (t.dataset.mesaNombre) {
+      const v = t.value.trim(); if (!v) { render(); return; }
+      await store.guardarMesa(+t.dataset.mesaNombre, { nombre: v });
+      await recargar(); toast('Nombre guardado');
+    } else if (t.dataset.mesaCap) {
+      const c = parseInt(t.value, 10); if (!(c > 0)) { render(); return; }
+      await store.guardarMesa(+t.dataset.mesaCap, { capacidad: c });
+      await recargar();
+    }
+  } catch (err) { errorGen(err); }
+});
+$('vista').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.target.dataset.mesaNombre || e.target.dataset.mesaCap)) e.target.blur(); });
+
+document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => { tab = b.dataset.tab; busqueda = ''; render(); window.scrollTo(0, 0); });
+
+/* ---------------- Exportar ---------------- */
+function descargarCsv(nombre, filas) {
+  const csv = '﻿' + filas.map(r => r.map(c => {
+    let s = String(c ?? '');
+    if (/^[=+\-@]/.test(s)) s = "'" + s;
+    return '"' + s.replace(/"/g, '""') + '"';
+  }).join(';')).join('\r\n');
+  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  const a = document.createElement('a'); a.href = url; a.download = nombre; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+function exportarInvitados() {
+  const filas = [['Grupo', 'Código', 'Suplente', 'Nombre', 'Edad', 'Asiste', 'Restricción', 'Detalle', 'Mesa', 'Respondió', 'Mensaje', 'Notas', 'Link']];
+  [...datos.grupos].sort((a, b) => (a.suplente - b.suplente) || porNombre(a, b)).forEach(g => {
+    [...g.integrantes].sort((a, b) => a.orden - b.orden).forEach(i => filas.push([
+      g.nombre, g.codigo, g.suplente ? 'Sí' : 'No', i.nombre, EDADES[edadDe(i)],
+      i.asiste === true ? 'Sí' : i.asiste === false ? 'No' : 'A confirmar',
+      i.asiste ? DIETAS[i.dieta] : '', i.asiste && i.dieta === 'otro' ? (i.dieta_detalle || '') : '',
+      i.asiste === false ? '' : nombreMesa(i.mesa_id),
+      g.respondido_at ? fechaCorta(g.respondido_at) : '', g.mensaje || '', g.notas || '', g.suplente ? '' : linkGrupo(g)
+    ]));
+  });
+  descargarCsv('invitados-boda.csv', filas);
+}
+function exportarMesas() {
+  const filas = [['Mesa', 'Nombre', 'Grupo', 'Edad', 'Confirmó', 'Restricción']];
+  const lista = [];
+  datos.grupos.forEach(g => g.integrantes.forEach(i => { if (i.asiste !== false && (i.mesa_id || !g.suplente)) lista.push({ g, i }); }));
+  const ordenMesa = (id) => { const k = datos.mesas.findIndex(m => m.id === id); return k < 0 ? 1e6 : k; };
+  lista.sort((a, b) => ordenMesa(a.i.mesa_id) - ordenMesa(b.i.mesa_id) || porNombre(a.g, b.g) || a.i.orden - b.i.orden);
+  lista.forEach(({ g, i }) => filas.push([nombreMesa(i.mesa_id) || 'Sin mesa', i.nombre, g.nombre, EDADES[edadDe(i)], i.asiste ? 'Sí' : 'A confirmar', i.asiste ? dietaTexto(i.dieta, i.dieta_detalle) : '']));
+  descargarCsv('mesas-boda.csv', filas);
+}
+
+/* ---------------- Ciclo ---------------- */
+function errorGen(e) { console.error(e); toast('Error: ' + (e.message || e)); }
+async function recargar() {
+  try { datos = await store.cargar(); if (!datos.mesas) datos.mesas = []; render(); }
+  catch (e) { errorGen(e); }
+}
+$('btnRefrescar').onclick = async () => { await recargar(); toast('Actualizado'); };
+
+async function mostrarApp() {
+  $('login').classList.add('oculto'); $('app').classList.remove('oculto');
+  await recargar();
+}
+
+async function iniciar() {
+  if (DEMO) {
+    $('bannerDemo').classList.remove('oculto');
+    $('btnSalir').classList.add('oculto');
+    return mostrarApp();
+  }
+  await cargarScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
+  sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+  const { data } = await sb.auth.getSession();
+  if (data.session && await esAdmin()) return mostrarApp();
+  $('login').classList.remove('oculto');
+}
+async function esAdmin() {
+  const { data, error } = await sb.rpc('boda_es_admin');
+  return !error && data === true;
+}
+$('formLogin').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('btnLogin'); btn.disabled = true; $('errLogin').textContent = '';
+  try {
+    const { error } = await sb.auth.signInWithPassword({ email: $('email').value.trim(), password: $('pass').value });
+    if (error) { $('errLogin').textContent = 'Mail o contraseña incorrectos.'; return; }
+    if (!(await esAdmin())) { $('errLogin').textContent = 'Este usuario no está habilitado (falta agregarlo en boda_admins).'; await sb.auth.signOut(); return; }
+    mostrarApp();
+  } finally { btn.disabled = false; }
+});
+$('btnSalir').onclick = async () => { if (sb) await sb.auth.signOut(); location.reload(); };
+
+iniciar();
+</script>
+</body>
+</html>
