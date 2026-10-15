@@ -591,29 +591,39 @@ function vComida(v) {
   $('expInv').onclick = exportarInvitados;
 }
 
+const PLAYLIST = 'https://open.spotify.com/playlist/48eZ4otlz1gsSguqYAtLQ3?si=sxWiOSXARaaHsKrFgabrqA&utm_source=copy-link&pt=5f6184feb643f6ed88346b0de946812c&pi=yCPJioTQQ5Gl6';
+const PLAYLIST_ID = '48eZ4otlz1gsSguqYAtLQ3';
 function vMusica(v) {
   const temas = [];
   datos.grupos.forEach(g => (g.temas || []).forEach(t => temas.push({ ...t, grupo: g.nombre })));
   temas.sort((a, b) => (a.creado_at || '').localeCompare(b.creado_at || ''));
   v.innerHTML = `
     <div class="tarjeta" style="margin-top:0">
-      <div class="fila-flex"><h2>Temas pedidos</h2><span class="muted">${temas.length}</span><span class="esp"></span>
-        ${temas.length ? '<button class="btn suave chico" id="copiarTemas">Copiar lista</button><button class="btn suave chico" id="expTemas">CSV</button>' : ''}</div>
-      ${temas.length ? `<table class="t"><thead><tr><th>Tema</th><th>Artista</th><th class="ocultar-movil">Pedido por</th><th></th></tr></thead><tbody>
+      <div class="fila-flex" style="margin-bottom:10px"><h2 style="margin:0">Nuestra Playlist</h2><span class="esp"></span>
+        <a class="btn chico" href="${esc(PLAYLIST)}" target="_blank" rel="noopener">Abrir en Spotify</a>
+        <button class="btn suave chico" id="copiarPlaylist">Copiar link</button></div>
+      <p class="muted chiquito" style="margin:0 0 12px">Los invitados suman sus canciones directamente en Spotify. Acá abajo ves la lista tal como está ahora.</p>
+      <iframe title="Playlist de la boda en Spotify" src="https://open.spotify.com/embed/playlist/${PLAYLIST_ID}?utm_source=generator&theme=0"
+        width="100%" height="452" style="border:0;border-radius:12px;display:block" loading="lazy"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    </div>
+    ${temas.length ? `<div class="tarjeta">
+      <div class="fila-flex"><h2>Temas pedidos desde la invitación vieja</h2><span class="muted">${temas.length}</span><span class="esp"></span>
+        <button class="btn suave chico" id="copiarTemas">Copiar lista</button></div>
+      <table class="t"><thead><tr><th>Tema</th><th>Artista</th><th class="ocultar-movil">Pedido por</th><th></th></tr></thead><tbody>
         ${temas.map(t => `<tr>
           <td>${esc(t.titulo)}${t.link ? ` · <a href="${esc(t.link)}" target="_blank" rel="noopener nofollow">link</a>` : ''}</td>
           <td>${esc(t.artista || '')}</td>
           <td class="ocultar-movil muted">${esc(t.grupo)}</td>
           <td style="text-align:right"><button class="x" data-tema="${esc(t.id)}" aria-label="Borrar tema">×</button></td></tr>`).join('')}
-      </tbody></table>` : '<div class="vacio">Todavía no pidieron temas.</div>'}
-    </div>`;
-  if (temas.length) {
-    $('copiarTemas').onclick = async () => {
-      const txt = temas.map(t => `${t.titulo}${t.artista ? ' – ' + t.artista : ''}${t.link ? ' (' + t.link + ')' : ''}`).join('\n');
-      try { await navigator.clipboard.writeText(txt); toast('Lista copiada'); } catch (e) { toast('No se pudo copiar'); }
-    };
-    $('expTemas').onclick = () => descargarCsv('temas-boda.csv', [['Tema', 'Artista', 'Link', 'Pedido por'], ...temas.map(t => [t.titulo, t.artista || '', t.link || '', t.grupo])]);
-  }
+      </tbody></table></div>` : ''}`;
+  $('copiarPlaylist').onclick = async () => {
+    try { await navigator.clipboard.writeText(PLAYLIST); toast('Link de la playlist copiado'); } catch (e) { prompt('Copiá el link:', PLAYLIST); }
+  };
+  if (temas.length) $('copiarTemas').onclick = async () => {
+    const txt = temas.map(t => `${t.titulo}${t.artista ? ' – ' + t.artista : ''}${t.link ? ' (' + t.link + ')' : ''}`).join('\n');
+    try { await navigator.clipboard.writeText(txt); toast('Lista copiada'); } catch (e) { toast('No se pudo copiar'); }
+  };
 }
 
 function vAjustes(v) {
