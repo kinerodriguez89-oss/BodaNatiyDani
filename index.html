@@ -7,6 +7,11 @@
 <meta name="description" content="Nos casamos. Domingo 11 de abril de 2027.">
 <meta property="og:title" content="Nati & Dani · Nos casamos">
 <meta property="og:description" content="Domingo 11 de abril de 2027 · Entrá para ver la invitación y confirmar tu asistencia.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://kinerodriguez89-oss.github.io/BodaNatiyDani/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f7efe6">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,6 +116,7 @@ h2.titulo{font-family:var(--serif);font-weight:500;font-size:clamp(34px,9vw,44px
 .cargando-txt{color:var(--tinta-suave);font-size:15px;padding:14px 0 6px}
 
 /* =================== Invitación por bloques =================== */
+#invitacion:focus{outline:none}
 #invitacion{
   position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;
   scroll-snap-type:y mandatory;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;
@@ -355,7 +361,7 @@ textarea.campo{min-height:88px;resize:vertical}
     <div id="zonaBienvenida" class="oculto">
       <p class="para-quien"><small>Invitación para</small><span id="paraQuien"></span></p>
       <button class="btn ancho" type="button" id="btnAbrir">Abrir invitación</button>
-      <p class="ayuda"><button class="link-btn" type="button" id="btnOtroCodigo">¿No sos vos? Ingresá otro código</button></p>
+      <p class="ayuda"><button class="link-btn" type="button" id="btnOtroCodigo" data-p="¿No son ustedes? Ingresá otro código">¿No sos vos? Ingresá otro código</button></p>
     </div>
 
     <div id="zonaCodigo" class="oculto">
@@ -377,7 +383,7 @@ textarea.campo{min-height:88px;resize:vertical}
       <p class="saludo" id="saludo"></p>
       <svg class="rama" viewBox="0 0 240 60" aria-hidden="true"><use href="#rama"/></svg>
       <h1 class="nombres">Nati <span class="y">&amp;</span> Dani</h1>
-      <p class="frase">Nuestra historia de amor continúa escribiéndose, y no podemos avanzar al siguiente capítulo sin ustedes. ¡Acompáñennos en el día más feliz de nuestras vidas!</p>
+      <p class="frase" data-p="Nuestra historia de amor continúa escribiéndose, y no podemos avanzar al siguiente capítulo sin ustedes. ¡Acompáñennos en el día más feliz de nuestras vidas!">Nuestra historia de amor continúa escribiéndose, y no podemos avanzar al siguiente capítulo sin vos. ¡Acompañanos en el día más feliz de nuestras vidas!</p>
       <div class="fecha-banda" aria-label="Domingo 11 de abril de 2027">
         <span class="lado">Domingo</span>
         <span class="dia">11</span>
@@ -391,7 +397,7 @@ textarea.campo{min-height:88px;resize:vertical}
       </div>
       <button class="btn" type="button" id="btnAgendar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 13.2c-.9-1-2.6-.6-2.6.8 0 1.2 1.6 2.2 2.6 2.9 1-.7 2.6-1.7 2.6-2.9 0-1.4-1.7-1.8-2.6-.8Z" fill="currentColor" stroke="none"/></svg>
-        Agendá la fecha
+        <span data-p="Agenden la fecha">Agendá la fecha</span>
       </button>
     </div>
     <button class="sig" type="button" data-sig>Deslizá<svg width="26" height="26"><use href="#flecha"/></svg></button>
@@ -522,7 +528,7 @@ textarea.campo{min-height:88px;resize:vertical}
         <ellipse cx="136" cy="82" rx="5" ry="4" fill="#a3ae95" stroke="none" transform="rotate(-20 136 82)"/>
         </g>
       </svg>
-      <p class="texto">Sumate a nuestra playlist y recomendá las canciones que no pueden faltar en la fiesta.</p>
+      <p class="texto" data-p="Súmense a nuestra playlist y recomienden las canciones que no pueden faltar en la fiesta.">Sumate a nuestra playlist y recomendá las canciones que no pueden faltar en la fiesta.</p>
       <p style="margin:20px 0 0">
         <a class="btn" id="linkPlaylist" target="_blank" rel="noopener">
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7 9.5c3.5-1 7.5-.6 10.3 1M7.6 12.6c3-.8 6.3-.4 8.7 1M8.2 15.5c2.4-.6 4.9-.3 6.9.8" fill="none" stroke="#c28567" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -537,7 +543,7 @@ textarea.campo{min-height:88px;resize:vertical}
   <section class="panel p-rosa" data-nombre="Instagram">
     <div class="contenido">
       <div class="sobrelinea">Fotos</div>
-      <h2 class="titulo">Compartí el momento</h2>
+      <h2 class="titulo" data-p="Compartan el momento">Compartí el momento</h2>
       <svg class="dibujo anim-insta" viewBox="0 0 160 120" aria-hidden="true" fill="none" stroke="#a76c50" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <g class="camara">
         <rect x="44" y="18" width="72" height="72" rx="20" fill="#fffaf4"/>
@@ -548,7 +554,7 @@ textarea.campo{min-height:88px;resize:vertical}
         <path class="corazon c2" d="M30 96c-2-2-6-1-6 2s4 5 6 7c2-2 6-4 6-7s-4-4-6-2Z" fill="#ddbd88" stroke="none"/>
         <path d="M30 108h100" stroke="#b9a08f" stroke-width="2"/>
       </svg>
-      <p class="texto">Seguí la cuenta de la boda y etiquetanos en tus fotos y videos de ese día.</p>
+      <p class="texto" data-p="Sigan la cuenta de la boda y etiquétennos en sus fotos y videos de ese día.">Seguí la cuenta de la boda y etiquetanos en tus fotos y videos de ese día.</p>
       <div class="handle" id="instaHandle"></div>
       <a class="btn" id="instaLink" target="_blank" rel="noopener">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
@@ -572,7 +578,7 @@ textarea.campo{min-height:88px;resize:vertical}
         <path d="M24 120h112" stroke="#b9a08f"/>
         <g stroke="#ddbd88" stroke-width="1.6"><path class="destello" d="M30 30v8M26 34h8"/><path class="destello d2" d="M132 24v8M128 28h8"/></g>
       </svg>
-      <p class="texto">La mayor alegría para nosotros será contar con tu compañía en nuestra celebración. Pero, si además deseás hacernos un obsequio, podés hacerlo a través de las siguientes cuentas:</p>
+      <p class="texto" data-p="La mayor alegría para nosotros será contar con su compañía en nuestra celebración. Pero, si además desean hacernos un obsequio, pueden hacerlo a través de las siguientes cuentas:">La mayor alegría para nosotros será contar con tu compañía en nuestra celebración. Pero, si además deseás hacernos un obsequio, podés hacerlo a través de las siguientes cuentas:</p>
       <div class="cuentas">
         <button class="btn" type="button" data-cuenta="ars">Cuenta en pesos</button>
         <button class="btn" type="button" data-cuenta="usd" id="btnUsd">Cuenta en dólares</button>
@@ -592,7 +598,7 @@ textarea.campo{min-height:88px;resize:vertical}
       <div class="cierre">
         <svg class="rama" viewBox="0 0 240 60" aria-hidden="true"><use href="#rama"/></svg>
         <p class="nombres">Nati <span class="y">&amp;</span> Dani</p>
-        <p style="font-size:14px;margin:4px 0 18px">¡Te esperamos!</p>
+        <p style="font-size:14px;margin:4px 0 18px" data-p="¡Los esperamos!">¡Te esperamos!</p>
         <button class="link-btn" type="button" id="btnSalir">Entrar con otro código</button>
       </div>
     </div>
@@ -728,9 +734,19 @@ const api = {
 
 function mensajeError(e) {
   const m = String(e && (e.message || e)) || '';
-  if (m.includes('plazo_vencido')) return 'El plazo para confirmar ya cerró. Escribinos y lo vemos.';
+  if (m.includes('plazo_vencido')) return 'El plazo para confirmar ya cerró. ' + t('Escribinos', 'Escríbannos') + ' y lo vemos.';
   if (m.includes('codigo_invalido')) return 'El código no es válido.';
   return 'Hubo un problema de conexión. Probá de nuevo en un ratito.';
+}
+
+/* ---------------- Singular / plural ---------------- */
+// Si la invitación es para más de una persona, los textos van en plural ("ustedes"); si es para una sola, en "vos".
+let plural = false;
+const t = (singular, pluralTxt) => plural ? pluralTxt : singular;
+document.querySelectorAll('[data-p]').forEach(el => { el.dataset.s = el.innerHTML; });
+function aplicarNumero(data) {
+  plural = !!data && (data.integrantes || []).length > 1;
+  document.querySelectorAll('[data-p]').forEach(el => { el.innerHTML = plural ? el.dataset.p : el.dataset.s; });
 }
 
 /* ---------------- Estado ---------------- */
@@ -760,6 +776,7 @@ async function prepararPuerta() {
     const data = await api.obtener(c);
     if (data) {
       codigo = c; inv = data; guardarLocal('boda_codigo', c);
+      aplicarNumero(data);
       $('paraQuien').textContent = data.grupo;
       zona('zonaBienvenida');
     } else {
@@ -798,7 +815,7 @@ $('formCodigo').addEventListener('submit', (e) => {
 });
 $('inputCodigo').addEventListener('input', (e) => { e.target.value = e.target.value.toUpperCase().replace(/\s/g, ''); $('errorCodigo').textContent = ''; });
 $('btnAbrir').addEventListener('click', () => { if (inv) { arrancarMusica(); mostrarInvitacion(); } });
-$('btnOtroCodigo').addEventListener('click', () => { $('inputCodigo').value = ''; modoCodigo(true); });
+$('btnOtroCodigo').addEventListener('click', () => { $('inputCodigo').value = ''; aplicarNumero(null); modoCodigo(true); });
 
 $('btnSalir').addEventListener('click', () => {
   guardarLocal('boda_codigo', null); codigo = null; inv = null;
@@ -821,12 +838,18 @@ function mostrarInvitacion() {
   $('puntos').classList.remove('oculto');
   document.body.classList.add('en-invitacion');
   contenedor.style.scrollBehavior = 'auto'; contenedor.scrollTop = 0; contenedor.style.scrollBehavior = '';
+  aplicarNumero(inv);
   $('saludo').textContent = '¡Hola, ' + inv.grupo + '!';
   editando = !inv.respondido_at && inv.abierto;
   prepararBorrador();
   renderRsvp();
   contenedor.focus({ preventScroll: true });
 }
+
+/* Mientras se escribe (sobre todo con el teclado del celu abierto) se apaga el encastre por bloques,
+   así la pantalla no salta y el campo no queda tapado */
+contenedor.addEventListener('focusin', (e) => { if (/INPUT|TEXTAREA/.test(e.target.tagName)) contenedor.style.scrollSnapType = 'none'; });
+contenedor.addEventListener('focusout', (e) => { if (/INPUT|TEXTAREA/.test(e.target.tagName)) setTimeout(() => { if (!/INPUT|TEXTAREA/.test(document.activeElement.tagName)) contenedor.style.scrollSnapType = ''; }, 300); });
 
 /* Navegación por bloques */
 $('puntos').innerHTML = paneles.map((p, k) => `<button type="button" data-ir="${k}" aria-label="${esc(p.dataset.nombre)}" title="${esc(p.dataset.nombre)}"></button>`).join('');
@@ -851,7 +874,7 @@ contenedor.addEventListener('scroll', () => {
 }, { passive: true });
 document.addEventListener('keydown', (e) => {
   if (contenedor.classList.contains('oculto') || !$('modal').classList.contains('oculto')) return;
-  if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+  if (/^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(document.activeElement.tagName) && document.activeElement !== contenedor) return;
   const k = panelActual();
   if (k === paneles.length - 1 && (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ')) return; // el último bloque se lee con scroll normal
   if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); irA(k + 1); }
@@ -942,7 +965,7 @@ function descargarIcs() {
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 $('btnAgendar').addEventListener('click', () => {
-  abrirModal(`${cabModal('Agendá la fecha')}
+  abrirModal(`${cabModal(t('Agendá la fecha', 'Agenden la fecha'))}
     <p style="margin:0 0 14px;color:var(--tinta-suave)">Domingo 11 de abril de 2027 · 11:30 hs</p>
     <div class="opciones-hoja">
       <a class="btn ancho" id="btnGcal" target="_blank" rel="noopener" href="${URL_GCAL}">Google Calendar</a>
@@ -960,19 +983,19 @@ function prepararBorrador() {
 function renderRsvp() {
   const cuerpo = $('rsvpCuerpo');
   $('textoPlazo').textContent = inv.abierto
-    ? 'Confirmá antes del ' + fechaLarga(inv.fecha_limite)
+    ? t('Confirmá', 'Confirmen') + ' antes del ' + fechaLarga(inv.fecha_limite)
     : 'El plazo para confirmar cerró el ' + fechaLarga(inv.fecha_limite);
 
   if (!editando) {
     const van = inv.integrantes.filter(i => i.asiste === true).length;
     const nose = inv.integrantes.filter(i => i.asiste === null).length;
     const sinResp = !inv.respondido_at;
-    const resumenTxt = van === 0 && nose === 0 ? 'Recibimos tu respuesta. ¡Te vamos a extrañar!'
-      : van === 0 ? 'Recibimos tu respuesta.'
+    const resumenTxt = van === 0 && nose === 0 ? t('Recibimos tu respuesta. ¡Te vamos a extrañar!', 'Recibimos su respuesta. ¡Los vamos a extrañar!')
+      : van === 0 ? t('Recibimos tu respuesta.', 'Recibimos su respuesta.')
       : inv.integrantes.length === 1 ? '¡Te esperamos!' : `${van} de ${inv.integrantes.length} presentes.`;
     cuerpo.innerHTML = `
       <div class="resumen-rsvp">
-        ${sinResp ? `<div class="cerrado">No llegamos a recibir tu confirmación. Si todavía querés venir, escribinos así lo vemos.</div>`
+        ${sinResp ? `<div class="cerrado">${t('No llegamos a recibir tu confirmación. Si todavía querés venir, escribinos así lo vemos.', 'No llegamos a recibir su confirmación. Si todavía quieren venir, escríbannos así lo vemos.')}</div>`
                   : `<p class="gracias">¡Gracias!</p><p style="margin:4px 0 0;color:var(--tinta-suave)">${resumenTxt}</p>${nose && inv.abierto ? `<p class="nota-pend" style="margin-top:12px">⏳ ${inv.integrantes.length === 1 ? 'Cuando lo sepas, entrá de nuevo con el mismo código y tocá' : `${nose === 1 ? 'Queda una persona' : `Quedan ${nose} personas`} con “Todavía no sé”. Cuando lo sepan, entren de nuevo con el mismo código y toquen`} <b>Modificar respuesta</b> (hasta el ${fechaLarga(inv.fecha_limite)}).</p>` : ''}`}
         <ul class="lista-resumen">
           ${inv.integrantes.map(i => `
@@ -993,7 +1016,7 @@ function renderRsvp() {
     <div id="personas">
       ${inv.integrantes.map(i => personaHtml(i)).join('')}
     </div>
-    <label class="etiqueta-campo" for="mensaje">¿Algo que quieras decirnos? (opcional)</label>
+    <label class="etiqueta-campo" for="mensaje">¿Algo que ${t('quieras', 'quieran')} decirnos? (opcional)</label>
     <textarea class="campo" id="mensaje" maxlength="1000" placeholder="Un mensaje, una aclaración…">${esc(mensajeBorrador)}</textarea>
     <p class="msg-error" id="errorRsvp" role="alert"></p>
     <button class="btn ancho" type="button" id="btnEnviar">Enviar confirmación</button>
@@ -1055,7 +1078,7 @@ async function enviarRsvp() {
     return;
   }
   const otrosSinDetalle = inv.integrantes.filter(i => borrador[i.id].asiste && borrador[i.id].dieta === 'otro' && !borrador[i.id].dieta_detalle.trim());
-  if (otrosSinDetalle.length) { $('errorRsvp').textContent = 'Contanos cuál es la restricción de ' + otrosSinDetalle[0].nombre + '.'; return; }
+  if (otrosSinDetalle.length) { $('errorRsvp').textContent = t('Contanos', 'Cuéntennos') + ' cuál es la restricción de ' + otrosSinDetalle[0].nombre + '.'; return; }
 
   const payload = inv.integrantes.map(i => {
     const b = borrador[i.id];
