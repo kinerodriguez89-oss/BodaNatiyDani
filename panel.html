@@ -371,8 +371,8 @@ function mensajeWa(g) {
     + `${pl ? 'Agenden' : 'Agendá'} esta fecha: 📅 *11.04.2027*\n`
     + `¿Por qué? Porque… ¡¡NOS CASAMOS!! 💍👰🤵😍\n`
     + `Y queremos compartir este día tan especial con ${pl ? 'ustedes' : 'vos'} 🥂✨\n\n`
-    + `Toda la info y la confirmación, acá 👇\n${linkGrupo(g)}\n`
-    + `🔑 ${pl ? 'Su' : 'Tu'} código: ${g.codigo}`;
+    + `${pl ? 'Toquen' : 'Tocá'} el link para ver la invitación y confirmar 👇\n`
+    + `${linkGrupo(g)}`;
 }
 const titulares = () => datos.grupos.filter(g => !g.suplente);
 const nombreMesa = (id) => { const m = datos.mesas.find(x => x.id === id); return m ? m.nombre : ''; };
