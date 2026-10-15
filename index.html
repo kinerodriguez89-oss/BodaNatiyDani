@@ -11,7 +11,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Allura&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   color-scheme: light;
@@ -35,6 +35,7 @@
   --serif:"Cormorant Garamond",Georgia,serif;
   --script:"Pinyon Script","Cormorant Garamond",cursive;
   --sans:"Jost",system-ui,-apple-system,sans-serif;
+  --num:"Allura","Pinyon Script",cursive;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -95,7 +96,7 @@ h2.titulo{font-family:var(--serif);font-weight:500;font-size:clamp(34px,9vw,44px
 }
 .tarjeta-puerta::before{content:"";position:absolute;inset:7px;border:1px solid rgba(234,216,202,.9);border-radius:22px;pointer-events:none}
 .tarjeta-puerta .nombres{font-size:clamp(52px,15vw,64px)}
-.fecha-grande{font-family:var(--sans);font-weight:300;font-variant-numeric:lining-nums;font-size:21px;letter-spacing:.18em;color:var(--tinta-suave);margin:4px 0 18px}
+.fecha-grande{font-family:var(--num);font-weight:400;font-size:36px;line-height:1.1;letter-spacing:.06em;color:var(--tinta);margin:0 0 14px}
 .campo-codigo{
   display:block;width:100%;text-align:center;text-transform:uppercase;letter-spacing:.4em;
   font-family:var(--sans);font-size:22px;font-weight:400;padding:12px 10px;
@@ -133,8 +134,8 @@ h2.titulo{font-family:var(--serif);font-weight:500;font-size:clamp(34px,9vw,44px
 .dibujo{display:block;width:clamp(130px,42vw,170px);height:auto;margin:12px auto 10px}
 .cuando{display:inline-flex;flex-direction:column;align-items:center;margin:6px 0 2px}
 .cuando .dia-txt{font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--tinta-suave)}
-.cuando .hora{font-family:var(--sans);font-weight:300;font-variant-numeric:lining-nums;font-size:46px;line-height:1.1;color:var(--tinta)}
-.cuando .hora small{font-size:18px;color:var(--tinta-suave);margin-left:4px}
+.cuando .hora{font-family:var(--num);font-weight:400;font-size:64px;line-height:1.05;color:var(--tinta)}
+.cuando .hora small{font-family:var(--sans);font-weight:300;font-size:18px;color:var(--tinta-suave);margin-left:6px}
 .lugar-nombre{font-family:var(--serif);font-size:26px;font-weight:500;line-height:1.2;margin:10px 0 2px}
 .lugar-dir{color:var(--tinta-suave);margin:0 0 20px;font-size:16px}
 
@@ -144,10 +145,10 @@ h2.titulo{font-family:var(--serif);font-weight:500;font-size:clamp(34px,9vw,44px
 .frase{font-family:var(--serif);font-size:19px;max-width:30ch;margin:4px auto 0;color:var(--tinta-suave);font-style:italic;line-height:1.45}
 .fecha-banda{display:flex;align-items:center;justify-content:center;gap:16px;margin:20px auto 2px;color:var(--tinta)}
 .fecha-banda .lado{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--tinta-suave);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:6px 4px;min-width:84px}
-.fecha-banda .dia{font-family:var(--sans);font-size:54px;line-height:1;font-weight:300;font-variant-numeric:lining-nums;letter-spacing:.02em}
+.fecha-banda .dia{font-family:var(--num);font-size:80px;line-height:.9;font-weight:400;padding:0 4px}
 .cuenta{display:flex;justify-content:center;gap:10px;margin:20px 0 20px}
 .cuenta div{background:var(--papel);border:1px solid var(--linea);border-radius:14px;padding:9px 6px 5px;min-width:72px;text-align:center}
-.cuenta b{display:block;font-family:var(--sans);font-weight:300;font-variant-numeric:lining-nums tabular-nums;font-size:28px;line-height:1.05}
+.cuenta b{display:block;font-family:var(--num);font-weight:400;font-size:40px;line-height:1}
 .cuenta span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-suave)}
 
 /* Siguiente + puntos */
@@ -265,7 +266,7 @@ textarea.campo{min-height:88px;resize:vertical}
 @media (prefers-reduced-motion:reduce){.aparece{animation:none}}
 @media (max-width:380px){
   .cuenta div{min-width:62px}
-  .cuenta b{font-size:24px}
+  .cuenta b{font-size:34px}
   .fecha-banda{gap:10px}
   .fecha-banda .lado{min-width:70px;letter-spacing:.22em}
   .panel{padding-left:18px;padding-right:18px}
@@ -345,7 +346,7 @@ textarea.campo{min-height:88px;resize:vertical}
         <span class="dia">11</span>
         <span class="lado">Abril</span>
       </div>
-      <div class="sobrelinea num">2027</div>
+      <div class="sobrelinea">2027</div>
       <div class="cuenta" id="cuenta" aria-label="Cuenta regresiva">
         <div><b id="cDias">–</b><span>días</span></div>
         <div><b id="cHoras">–</b><span>horas</span></div>
