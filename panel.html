@@ -95,6 +95,9 @@ main{max-width:960px;margin:0 auto;padding:16px 16px 60px}
 .pill.pend{background:var(--mostaza-claro);color:#8a6b3a}
 .pill.gris{background:#efe8e1;color:var(--tinta-suave)}
 .pill.menor{background:var(--mostaza-claro);color:#8a6b3a;font-size:11px;padding:1px 7px}
+.pill.m17{background:var(--rosa-claro);color:#8a4f45;font-size:11px;padding:1px 7px}
+table.edades td.n,table.edades th.n{text-align:right;font-variant-numeric:tabular-nums}
+table.edades tr.tot td{font-weight:500;border-top:1px solid var(--tinta-tenue)}
 .pill.edad{background:#fff;border:1px dashed var(--mostaza);color:#8a6b3a;font-size:11px;padding:0 7px}
 .pill.mesa{background:#efe8e1;color:var(--tinta-suave);font-size:11px;padding:1px 7px}
 .integrantes{list-style:none;padding:0;margin:10px 0 0}
@@ -220,6 +223,7 @@ const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const DIETAS = { ninguna: 'Sin restricción', vegetariano: 'Vegetariano', vegano: 'Vegano', celiaco: 'Celíaco', otro: 'Otra' };
+const pillEdad = (i) => i.es_nino ? '<span class="pill menor">Hasta 5</span>' : i.es_6_17 ? '<span class="pill m17">6 a 17</span>' : '';
 const dietaTexto = (d, det) => d === 'otro' ? (det ? 'Otra: ' + det : 'Otra') : DIETAS[d] || d;
 const fechaCorta = (iso) => iso ? new Date(iso).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' }) + ' ' + new Date(iso).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false }) : '';
 const fechaLarga = (d) => { if (!d) return ''; const [y, m, dd] = d.split('-').map(Number); return new Date(y, m - 1, dd).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }); };
@@ -237,13 +241,13 @@ function cargarScript(src) { return new Promise((ok, mal) => { const s = documen
 const DEMO_KEY = 'boda_demo_v1';
 function mesasSemilla() { return Array.from({ length: 12 }, (_, k) => ({ id: k + 1, nombre: 'Mesa ' + (k + 1), capacidad: 10, orden: k + 1 })); }
 function demoSemilla() {
-  const p = (nombre, es_nino, orden) => ({ id: uid(), nombre, es_nino, edad_pendiente: false, orden, asiste: null, dieta: 'ninguna', dieta_detalle: null, mesa_id: null });
+  const p = (nombre, es_nino, orden, es_6_17 = false) => ({ id: uid(), nombre, es_nino, es_6_17, edad_pendiente: false, orden, asiste: null, dieta: 'ninguna', dieta_detalle: null, mesa_id: null });
   return {
     ajustes: { fecha_limite: '2027-02-01', url_invitacion: '' },
     mesas: mesasSemilla(),
     grupos: [
       { id: uid(), nombre: 'Familia Pérez', codigo: 'DEMO01', suplente: false, notas: 'Primos de Nati', fecha_limite: null, mensaje: null, respondido_at: null, creado_at: new Date().toISOString(),
-        integrantes: [p('Juan Pérez', false, 0), p('María Gómez', false, 1), p('Sofía', true, 2), p('Tomás', true, 3)], temas: [] },
+        integrantes: [p('Juan Pérez', false, 0), p('María Gómez', false, 1), p('Sofía', false, 2, true), p('Tomás', true, 3)], temas: [] },
       { id: uid(), nombre: 'Caro y Martín', codigo: 'DEMO02', suplente: false, notas: '', fecha_limite: null, mensaje: null, respondido_at: null, creado_at: new Date().toISOString(),
         integrantes: [p('Carolina Díaz', false, 0), p('Martín Ruiz', false, 1)], temas: [] }
     ]
@@ -270,7 +274,7 @@ function demoNuevoGrupo(d, nombre, suplente) {
 
 function chk(r) { if (r.error) throw r.error; return r.data; }
 const filaIntegrante = (i, gid, orden) => ({
-  id: i.id, grupo_id: gid, nombre: i.nombre, es_nino: !!i.es_nino, edad_pendiente: !!i.edad_pendiente, orden,
+  id: i.id, grupo_id: gid, nombre: i.nombre, es_nino: !!i.es_nino, es_6_17: !!i.es_6_17, edad_pendiente: !!i.edad_pendiente, orden,
   asiste: i.asiste, dieta: i.dieta || 'ninguna', dieta_detalle: i.dieta_detalle || null,
   mesa_id: i.asiste === false ? null : (i.mesa_id || null)
 });
@@ -383,7 +387,8 @@ function estadoGrupo(g) {
   return 'novan';
 }
 function totales() {
-  const t = { grupos: 0, respondieron: 0, vienen: 0, pagan: 0, menores: 0, edadPend: 0, sinMesa: 0, si: 0, siMenores: 0, no: 0, pend: 0, dietas: {}, suplentes: 0 };
+  const t = { grupos: 0, respondieron: 0, vienen: 0, edadPend: 0, sinMesa: 0, si: 0, no: 0, pend: 0, dietas: {}, suplentes: 0,
+    edad: { adulto: { inv: 0, si: 0 }, m17: { inv: 0, si: 0 }, m5: { inv: 0, si: 0 }, pend: { inv: 0, si: 0 } } };
   datos.grupos.forEach(g => {
     if (g.suplente) { t.suplentes += (g.integrantes || []).length; return; }
     t.grupos++;
@@ -391,11 +396,11 @@ function totales() {
     (g.integrantes || []).forEach(i => {
       if (i.asiste === false) { t.no++; return; }
       t.vienen++;
-      if (i.es_nino) t.menores++; else t.pagan++;
+      const e = edadDe(i); t.edad[e].inv++;
       if (i.edad_pendiente) t.edadPend++;
       if (!i.mesa_id) t.sinMesa++;
       if (i.asiste === true) {
-        t.si++; if (i.es_nino) t.siMenores++;
+        t.si++; t.edad[edadDe(i)].si++;
         if (i.dieta && i.dieta !== 'ninguna') t.dietas[i.dieta] = (t.dietas[i.dieta] || 0) + 1;
       } else t.pend++;
     });
@@ -411,6 +416,15 @@ function render() {
   ({ resumen: vResumen, invitados: (x) => vGrupos(x, false), suplentes: (x) => vGrupos(x, true), mesas: vMesas, comida: vComida, musica: vMusica, ajustes: vAjustes })[tab](v);
 }
 
+function tablaEdades(t) {
+  const filas = [['adulto', 'Adultos (18+)'], ['m17', '6 a 17 años'], ['m5', 'Hasta 5 años']];
+  if (t.edad.pend.inv) filas.push(['pend', '¿Edad?']);
+  return `<table class="t edades"><thead><tr><th></th><th class="n">Invitados</th><th class="n">Confirmados</th></tr></thead><tbody>
+    ${filas.map(([k, n]) => `<tr><td>${n}</td><td class="n">${t.edad[k].inv}</td><td class="n">${t.edad[k].si}</td></tr>`).join('')}
+    <tr class="tot"><td>Total</td><td class="n">${t.vienen}</td><td class="n">${t.si}</td></tr>
+  </tbody></table>`;
+}
+
 function vResumen(v) {
   const t = totales();
   const tot = t.vienen + t.no;
@@ -418,14 +432,18 @@ function vResumen(v) {
   const ultimas = titulares().filter(g => g.respondido_at).sort((a, b) => b.respondido_at.localeCompare(a.respondido_at)).slice(0, 6);
   v.innerHTML = `
     <div class="grid-stats">
-      ${stat('Invitados', t.vienen, `${t.pagan} pagan · ${t.menores} menores`)}
-      ${stat('Confirmados', t.si, `${t.si - t.siMenores} adultos · ${t.siMenores} menores`, 'si')}
+      ${stat('Invitados', t.vienen, `${t.edad.adulto.inv} adultos · ${t.edad.m17.inv + t.edad.m5.inv} menores`)}
+      ${stat('Confirmados', t.si, `${t.edad.adulto.si} adultos · ${t.edad.m17.si + t.edad.m5.si} menores`, 'si')}
       ${stat('A confirmar', t.pend, 'personas')}
       ${stat('No vienen', t.no, '', 'no')}
       ${stat('Sin mesa', t.sinMesa, '<a href="#" data-ir="mesas">armar mesas</a>', t.sinMesa ? 'alerta' : '')}
       ${stat('Suplentes', t.suplentes, '<a href="#" data-ir="suplentes">ver</a>')}
     </div>
-    ${t.edadPend ? `<p class="chiquito muted" style="margin:10px 2px 0">Hay ${t.edadPend} ${t.edadPend === 1 ? 'persona' : 'personas'} con la edad a confirmar.</p>` : ''}
+    <div class="tarjeta">
+      <h2>Por edad</h2>
+      ${tablaEdades(t)}
+      ${t.edadPend ? `<p class="chiquito muted" style="margin:8px 0 0">Hay ${t.edadPend} ${t.edadPend === 1 ? 'persona' : 'personas'} con la edad a confirmar: marcalas desde <a href="#" data-ir="invitados">Editar</a>.</p>` : ''}
+    </div>
     <div class="tarjeta">
       <div class="fila-flex"><h2>Respuestas</h2><span class="esp"></span><span class="muted">${t.respondieron} de ${t.grupos} grupos</span></div>
       <div class="barra" aria-hidden="true"><i style="width:${pct(t.si)};background:var(--salvia)"></i><i style="width:${pct(t.no)};background:var(--rosa)"></i></div>
@@ -433,7 +451,7 @@ function vResumen(v) {
     </div>
     <div class="tarjeta">
       <h2>Para el salón</h2>
-      <p style="margin:0">${t.si - t.siMenores} adultos y ${t.siMenores} menores confirmados</p>
+      <p style="margin:0">Confirmados: <b>${t.edad.adulto.si}</b> adultos · <b>${t.edad.m17.si}</b> de 6 a 17 · <b>${t.edad.m5.si}</b> de hasta 5${t.edad.pend.si ? ` · <b>${t.edad.pend.si}</b> sin edad` : ''}</p>
       <p class="muted chiquito" style="margin:6px 0 0">${Object.keys(t.dietas).length
         ? Object.entries(t.dietas).map(([d, n]) => `${esc(DIETAS[d])}: <b>${n}</b>`).join(' · ') + ` · <a href="#" data-ir="comida">ver detalle</a>`
         : 'Sin restricciones alimentarias informadas por ahora.'}</p>
@@ -494,7 +512,7 @@ function grupoHtml(g) {
         ${ints.map(i => `<li>
           <span class="ico ${i.asiste === true ? 'si' : i.asiste === false ? 'no' : 'pend'}">${i.asiste === true ? '✓' : i.asiste === false ? '✕' : '·'}</span>
           <span>${esc(i.nombre)}</span>
-          ${i.es_nino ? '<span class="pill menor">Menor</span>' : ''}
+          ${pillEdad(i)}
           ${i.edad_pendiente ? '<span class="pill edad">¿Edad?</span>' : ''}
           ${i.asiste && i.dieta !== 'ninguna' ? `<span class="dieta-tag">${esc(dietaTexto(i.dieta, i.dieta_detalle))}</span>` : ''}
           ${i.mesa_id && i.asiste !== false ? `<span class="pill mesa">${esc(nombreMesa(i.mesa_id))}</span>` : ''}
@@ -566,7 +584,7 @@ function vMesas(v) {
   $('expMesas').onclick = exportarMesas;
 }
 function liMesa(i, g, enSinMesa) {
-  return `<li><span class="nm">${esc(i.nombre)} ${i.es_nino ? '<span class="pill menor">Menor</span>' : ''}${g.suplente ? ' <span class="pill gris">Suplente</span>' : i.asiste === true ? ' <span style="color:var(--salvia-osc)">✓</span>' : ''}
+  return `<li><span class="nm">${esc(i.nombre)} ${pillEdad(i)}${g.suplente ? ' <span class="pill gris">Suplente</span>' : i.asiste === true ? ' <span style="color:var(--salvia-osc)">✓</span>' : ''}
     ${enSinMesa ? '' : `<span class="gr">${esc(g.nombre)}</span>`}</span>
     <select data-mesa-persona="${esc(i.id)}" aria-label="Mesa de ${esc(i.nombre)}">${opcionesMesa(i.mesa_id || null)}</select></li>`;
 }
@@ -578,14 +596,15 @@ function vComida(v) {
   filas.sort((a, b) => a.i.dieta.localeCompare(b.i.dieta) || a.i.nombre.localeCompare(b.i.nombre, 'es'));
   v.innerHTML = `
     <div class="grid-stats">
-      ${stat('Adultos', t.si - t.siMenores, 'confirmados')}
-      ${stat('Menores', t.siMenores, 'confirmados')}
+      ${stat('Adultos', t.edad.adulto.si, 'confirmados')}
+      ${stat('6 a 17', t.edad.m17.si, 'confirmados')}
+      ${stat('Hasta 5', t.edad.m5.si, 'confirmados')}
       ${['vegetariano', 'vegano', 'celiaco', 'otro'].map(d => stat(DIETAS[d], t.dietas[d] || 0)).join('')}
     </div>
     <div class="tarjeta">
       <div class="fila-flex"><h2>Restricciones</h2><span class="esp"></span><button class="btn suave chico" id="expInv">Exportar todo (CSV)</button></div>
       ${filas.length ? `<table class="t"><thead><tr><th>Nombre</th><th>Restricción</th><th class="ocultar-movil">Grupo</th><th class="ocultar-movil">Mesa</th></tr></thead><tbody>
-        ${filas.map(({ g, i }) => `<tr><td>${esc(i.nombre)}${i.es_nino ? ' <span class="pill menor">Menor</span>' : ''}</td><td>${esc(dietaTexto(i.dieta, i.dieta_detalle))}</td><td class="ocultar-movil muted">${esc(g.nombre)}</td><td class="ocultar-movil muted">${esc(nombreMesa(i.mesa_id))}</td></tr>`).join('')}
+        ${filas.map(({ g, i }) => `<tr><td>${esc(i.nombre)} ${pillEdad(i)}</td><td>${esc(dietaTexto(i.dieta, i.dieta_detalle))}</td><td class="ocultar-movil muted">${esc(g.nombre)}</td><td class="ocultar-movil muted">${esc(nombreMesa(i.mesa_id))}</td></tr>`).join('')}
       </tbody></table>` : '<div class="vacio">Nadie informó restricciones todavía.</div>'}
     </div>`;
   $('expInv').onclick = exportarInvitados;
@@ -671,8 +690,8 @@ function vAjustes(v) {
 
 /* ---------------- Editor de grupo ---------------- */
 let ed = null;
-const EDADES = { adulto: 'Adulto', menor: 'Menor', pend: '¿Edad?' };
-const edadDe = (p) => p.es_nino ? 'menor' : p.edad_pendiente ? 'pend' : 'adulto';
+const EDADES = { adulto: 'Adulto (18+)', m17: '6 a 17 años', m5: 'Hasta 5 años', pend: '¿Edad?' };
+const edadDe = (p) => p.es_nino ? 'm5' : p.es_6_17 ? 'm17' : p.edad_pendiente ? 'pend' : 'adulto';
 function abrirEditor(g, sup) {
   ed = g ? {
     id: g.id, nombre: g.nombre, suplente: !!g.suplente, notas: g.notas || '', fecha_limite: g.fecha_limite || '', respondido_at: g.respondido_at,
@@ -682,7 +701,7 @@ function abrirEditor(g, sup) {
   $('editor').classList.remove('oculto');
   setTimeout(() => $('edNombre') && $('edNombre').focus(), 50);
 }
-const nuevaPersona = () => ({ id: null, nombre: '', es_nino: false, edad_pendiente: false, asiste: null, dieta: 'ninguna', dieta_detalle: '', mesa_id: null, mover: '' });
+const nuevaPersona = () => ({ id: null, nombre: '', es_nino: false, es_6_17: false, edad_pendiente: false, asiste: null, dieta: 'ninguna', dieta_detalle: '', mesa_id: null, mover: '' });
 function cerrarEditor() { $('editor').classList.add('oculto'); ed = null; }
 
 function opcionesMover(sel) {
@@ -774,7 +793,7 @@ function leerEditor() {
     const p = ed.integrantes[+div.dataset.k];
     const val = (f) => { const x = div.querySelector(`[data-f="${f}"]`); return x ? x.value : null; };
     p.nombre = val('nombre');
-    const edad = val('edad'); p.es_nino = edad === 'menor'; p.edad_pendiente = edad === 'pend';
+    const edad = val('edad'); p.es_nino = edad === 'm5'; p.es_6_17 = edad === 'm17'; p.edad_pendiente = edad === 'pend';
     const a = val('asiste'); p.asiste = a === '' ? null : a === 'si';
     p.dieta = val('dieta');
     const det = val('dieta_detalle'); p.dieta_detalle = det == null ? '' : det;
@@ -792,7 +811,7 @@ async function guardarEditor() {
   if (!nombre) { $('edErr').textContent = 'Poné un nombre para el grupo.'; return; }
   if (!conNombre.length) { $('edErr').textContent = 'Agregá al menos una persona.'; return; }
   if (!quedan.length && !confirm('Pasás a todos a otros grupos, así que este grupo queda vacío y se borra (su código deja de funcionar). ¿Seguimos?')) return;
-  const limpiar = (p) => ({ id: p.id, nombre: p.nombre.trim(), es_nino: p.es_nino, edad_pendiente: p.edad_pendiente, asiste: p.asiste, dieta: p.dieta, dieta_detalle: p.dieta === 'otro' ? (p.dieta_detalle || '').trim() : null, mesa_id: p.mesa_id });
+  const limpiar = (p) => ({ id: p.id, nombre: p.nombre.trim(), es_nino: p.es_nino, es_6_17: p.es_6_17, edad_pendiente: p.edad_pendiente, asiste: p.asiste, dieta: p.dieta, dieta_detalle: p.dieta === 'otro' ? (p.dieta_detalle || '').trim() : null, mesa_id: p.mesa_id });
   const btn = $('edGuardar'); btn.disabled = true; btn.textContent = 'Guardando…';
   try {
     await store.guardarGrupo(
