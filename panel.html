@@ -104,6 +104,8 @@ table.edades tr.tot td{font-weight:500;border-top:1px solid var(--tinta-tenue)}
 .integrantes li{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:15px;flex-wrap:wrap}
 .ico{width:20px;text-align:center;flex:none}
 .ico.si{color:var(--salvia-osc)}.ico.no{color:var(--error)}.ico.pend{color:var(--tinta-tenue)}
+.mini{border:1px dashed var(--linea);background:none;border-radius:999px;padding:0 8px;font-size:11px;color:var(--tinta-suave);cursor:pointer;margin-left:auto;line-height:1.7}
+.mini:hover{background:var(--rosa-claro);color:var(--tinta);border-style:solid}
 .dieta-tag{font-size:12px;color:var(--terracota-osc);background:var(--rosa-claro);border-radius:6px;padding:1px 6px}
 .mensaje{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--tinta-suave);margin:8px 0 0;padding-left:10px;border-left:2px solid var(--rosa)}
 .notas{font-size:13px;color:var(--tinta-suave);margin-top:6px}
@@ -335,6 +337,22 @@ const store = {
     if (DEMO) { const d = demoLeer(); d.ajustes[clave] = valor; demoGuardar(d); return; }
     chk(await sb.from('boda_ajustes').upsert({ clave, valor }));
   },
+  // Pasa una persona sola a la otra lista, en un grupo nuevo con su nombre
+  async moverASuLista(persona, suplente) {
+    if (DEMO) {
+      const d = demoLeer();
+      const og = d.grupos.find(g => g.integrantes.some(i => i.id === persona.id));
+      const i = og.integrantes.find(x => x.id === persona.id);
+      og.integrantes = og.integrantes.filter(x => x !== i);
+      const ng = demoNuevoGrupo(d, i.nombre, suplente);
+      ng.integrantes.push({ ...i, orden: 0 });
+      if (!og.integrantes.length) d.grupos = d.grupos.filter(g => g !== og);
+      demoGuardar(d); return ng;
+    }
+    const ng = chk(await sb.from('boda_grupos').insert({ nombre: persona.nombre, suplente }).select('id, codigo').single());
+    chk(await sb.from('boda_integrantes').update({ grupo_id: ng.id, orden: 0 }).eq('id', persona.id));
+    return ng;
+  },
   async borrarTema(id) {
     if (DEMO) { const d = demoLeer(); d.grupos.forEach(g => { g.temas = g.temas.filter(t => t.id !== id); }); demoGuardar(d); return; }
     chk(await sb.from('boda_temas').delete().eq('id', id));
@@ -475,8 +493,8 @@ function vGrupos(v, sup) {
   const cuenta = (f) => base.filter(g => f === 'todos' || estadoGrupo(g) === f).length;
   const personas = base.reduce((n, g) => n + (g.integrantes || []).length, 0);
   v.innerHTML = `
-    ${sup ? '<p class="leyenda">Gente para invitar si alguien no viene. No suman en los totales y su código <b>no abre</b> la invitación hasta que los pases a invitados.</p>'
-          : `<p class="leyenda">${base.length} grupos · ${personas} personas. Tocá <b>Editar</b> para cambiar nombres, edad, mesa o pasar a alguien a otro grupo.</p>`}
+    ${sup ? '<p class="leyenda">Gente para invitar si alguien no viene. No suman en los totales y su código <b>no abre</b> la invitación hasta que los pases a invitados. Con <b>→ Invitado</b> pasás a una sola persona del grupo.</p>'
+          : `<p class="leyenda">${base.length} grupos · ${personas} personas. Tocá <b>Editar</b> para cambiar nombres, edad, mesa o pasar a alguien a otro grupo. Con <b>→ Suplente</b> mandás a una sola persona a suplentes.</p>`}
     <div class="herr">
       <input class="campo" id="buscar" placeholder="Buscar grupo, persona o código" value="${esc(busqueda)}">
       <button class="btn" id="btnNuevo">${sup ? '+ Nuevo suplente' : '+ Nuevo grupo'}</button>
@@ -516,15 +534,17 @@ function grupoHtml(g) {
           ${i.edad_pendiente ? '<span class="pill edad">¿Edad?</span>' : ''}
           ${i.asiste && i.dieta !== 'ninguna' ? `<span class="dieta-tag">${esc(dietaTexto(i.dieta, i.dieta_detalle))}</span>` : ''}
           ${i.mesa_id && i.asiste !== false ? `<span class="pill mesa">${esc(nombreMesa(i.mesa_id))}</span>` : ''}
+          ${ints.length > 1 ? `<button class="mini" data-acc="persona" data-pid="${esc(i.id)}" title="Pasar solo a ${esc(i.nombre)} a ${g.suplente ? 'invitados' : 'suplentes'}">${g.suplente ? '→ Invitado' : '→ Suplente'}</button>` : ''}
         </li>`).join('')}
       </ul>
       ${g.mensaje ? `<p class="mensaje">“${esc(g.mensaje)}”</p>` : ''}
       ${g.notas ? `<div class="notas">📝 ${esc(g.notas)}</div>` : ''}
       <div class="grupo-acc">
         ${g.suplente
-          ? '<button class="btn chico" data-acc="ainvitados">Pasar a invitados</button>'
+          ? `<button class="btn chico" data-acc="ainvitados">${ints.length > 1 ? 'Pasar todo el grupo a invitados' : 'Pasar a invitados'}</button>`
           : `<a class="btn wa chico" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(mensajeWa(g))}">WhatsApp</a>
-             <button class="btn suave chico" data-acc="copiar">Copiar mensaje</button>`}
+             <button class="btn suave chico" data-acc="copiar">Copiar mensaje</button>
+             <button class="btn suave chico" data-acc="asuplentes">${ints.length > 1 ? 'Pasar todo el grupo a suplentes' : 'Pasar a suplentes'}</button>`}
         <button class="btn suave chico" data-acc="editar">Editar</button>
         <button class="btn peligro chico" data-acc="borrar">Borrar</button>
       </div>
@@ -846,7 +866,17 @@ $('vista').addEventListener('click', async (e) => {
   }
   if (acc.dataset.acc === 'editar') abrirEditor(g);
   if (acc.dataset.acc === 'ainvitados') {
-    try { await store.setSuplente(g.id, false); await recargar(); toast(`${g.nombre} pasó a invitados`); } catch (err) { errorGen(err); }
+    try { await store.setSuplente(g.id, false); await recargar(); toast(`${g.nombre} pasó a invitados · su código ya abre la invitación`); } catch (err) { errorGen(err); }
+  }
+  if (acc.dataset.acc === 'asuplentes') {
+    if (!confirm(`¿Pasar "${g.nombre}" a suplentes? Su código deja de abrir la invitación hasta que lo vuelvas a pasar (no se pierde nada: respuestas, mesa y código quedan igual).`)) return;
+    try { await store.setSuplente(g.id, true); await recargar(); toast(`${g.nombre} pasó a suplentes`); } catch (err) { errorGen(err); }
+  }
+  if (acc.dataset.acc === 'persona') {
+    const i = g.integrantes.find(x => x.id === acc.dataset.pid);
+    const aSup = !g.suplente;
+    if (!confirm(`¿Pasar a ${i.nombre} a ${aSup ? 'suplentes' : 'invitados'}? Queda en un grupo propio con su nombre${aSup ? '' : ' y un código nuevo para mandarle'}.`)) return;
+    try { await store.moverASuLista(i, aSup); await recargar(); toast(`${i.nombre} pasó a ${aSup ? 'suplentes' : 'invitados'}`); } catch (err) { errorGen(err); }
   }
   if (acc.dataset.acc === 'borrar') {
     if (!confirm(`¿Borrar "${g.nombre}" y todas sus respuestas? El código deja de funcionar.`)) return;
